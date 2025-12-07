@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Complete Payment • Gauri Creations</title>
+
+<style>
+:root {
+    --accent-blue: #007aff;
+    --accent-green: #34c759;
+    --text-main: #111827;
+}
+
+/* GENERAL */
+body {
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #86e1ff, #ffd4b8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 22px;
+    padding: 22px 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* TOP LOGO */
+.logo-wrap { text-align: center; }
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    object-fit: cover;
+}
+
+/* SUMMARY */
+.summary {
+    padding: 14px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin-top: 12px;
+    margin-bottom: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+/* QR */
+.qr-wrap { text-align: center; }
+.qr {
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+    background: white;
+    border-radius: 20px;
+}
+
+/* PAY BUTTONS */
+.pay-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pay-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    background: white;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+.pay-pill img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+/* COMPLETED BUTTON */
+.confirm-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 12px;
+    background: #007aff;
+    border-radius: 999px;
+    font-weight: 600;
+    color: white;
+    border: none;
+}
+
+/* WAITING ANIMATION */
+.slider-shell {
+    margin-top: 18px;
+    display: none;
+    text-align: center;
+}
+
+.slider-label { font-size: 13px; margin-bottom: 6px; }
+
+.glass-track {
+    width: 24%;
+    height: 46px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.6);
+    position: relative;
+    overflow: hidden;
+    display: none;
+}
+
+.glass-track.visible { display: block; }
+
+.glass-thumb {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: white;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: moveThumb 1.7s infinite;
+}
+
+@keyframes moveThumb {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(calc(100% - 46px)); }
+    100% { transform: translateX(0); }
+}
+
+/* SUCCESS STATE */
+.glass-track.success {
+    background: linear-gradient(90deg,#22c55e,#4ade80);
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* GLITTER */
+.glitter {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: radial-gradient(circle,#fff7c2,#ff9900);
+    animation: glitterAnim .7s ease-out forwards;
+}
+
+@keyframes glitterAnim {
+    0% { opacity: 1; transform: scale(0.7); }
+    100% { opacity: 0; transform: scale(0.1) translate(20px,-20px); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="logo-wrap">
+        <img src="logo-gauri.jpeg" class="logo">
+    </div>
+
+    <h2 style="text-align:center; margin:8px 0;">Complete Your Payment</h2>
+    <p style="text-align:center; color:#555; margin:0 0 12px;">Secure UPI Payment</p>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+        <div class="summary-row"><span>Product</span><strong id="summaryProduct">-</strong></div>
+        <div class="summary-row"><span>Order ID</span><strong id="summaryOrderId">-</strong></div>
+        <div class="summary-row"><span>Price</span><span id="summaryPrice">₹0</span></div>
+        <div class="summary-row"><span>Qty</span><span id="summaryQty">1</span></div>
+        <div class="summary-row"><span>Delivery</span><span id="summaryShip">₹0</span></div>
+        <div class="summary-row"><strong>Total</strong><strong id="summaryTotal">₹0</strong></div>
+    </div>
+
+    <!-- QR -->
+    <div class="qr-wrap">
+        <img src="upi-qr.jpeg" class="qr">
+    </div>
+
+    <p style="text-align:center; margin-bottom:10px;">Scan or use quick buttons</p>
+
+    <!-- PAY BUTTONS -->
+    <div class="pay-buttons">
+        <a id="btnGpay" class="pay-pill"><img src="gpay.png">Pay with GPay</a>
+        <a id="btnPhonePe" class="pay-pill"><img src="phonepe.png">Pay with PhonePe</a>
+    </div>
+
+    <button id="confirmButton" class="confirm-btn">I completed the payment</button>
+
+    <!-- WAITING ANIMATION -->
+    <div class="slider-shell" id="waitArea">
+        <div class="slider-label" id="sliderLabel">Checking payment…</div>
+        <div class="glass-track" id="glassTrack">
+            <div class="glass-thumb">»</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NEW PAYMENT VERIFY LOGIC -->
+<script src="payment.js"></script>
+
+<script>
+// Fill Summary Info from URL
+const p = new URLSearchParams(window.location.search);
+
+const product = p.get("product");
+const orderId = p.get("orderId");
+const price = p.get("price");
+const qty = p.get("qty");
+const delivery = p.get("delivery");
+
+document.getElementById("summaryProduct").textContent = product;
+document.getElementById("summaryOrderId").textContent = orderId;
+document.getElementById("summaryPrice").textContent = "₹" + price;
+document.getElementById("summaryQty").textContent = qty;
+document.getElementById("summaryShip").textContent = "₹" + delivery;
+
+let total = (parseInt(price) * parseInt(qty)) + parseInt(delivery);
+document.getElementById("summaryTotal").textContent = "₹" + total;
+
+// Build UPI Link
+const UPI_ID = "vinayaksasane999-2@oksbi";
+const MERCHANT = "Gauri Creations";
+
+const upiLink =
+`upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(MERCHANT)}&am=${encodeURIComponent(total)}&cu=INR`;
+
+document.getElementById("btnGpay").href = upiLink;
+document.getElementById("btnPhonePe").href = upiLink;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order • Gauri Creations</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #86e1ff, #ffd4b8);
+        padding: 20px;
+        color: #222;
+    }
+
+    .container {
+        max-width: 470px;
+        margin: auto;
+        background: #ffffffd8;
+        padding: 25px;
+        border-radius: 22px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        text-align: center;
+    }
+
+    .logo {
+        width: 130px;
+        display: block;
+        margin: 0 auto 20px;
+        border-radius: 12px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .product-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+        text-align: left;
+    }
+
+    .product-img {
+        width: 95px;
+        height: 95px;
+        border-radius: 15px;
+        object-fit: cover;
+    }
+
+    .product-title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .input-field {
+        width: 92%;
+        margin: 12px auto 0;
+        display: block;
+        padding: 13px;
+        border-radius: 12px;
+        border: 1px solid #bbb;
+        font-size: 15px;
+    }
+
+    .qty-row {
+        width: 92%;
+        margin: 18px auto 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .qty-btn {
+        padding: 8px 16px;
+        border-radius: 10px;
+        background: #007aff;
+        color: white;
+        border: none;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .summary {
+        background: #fff;
+        padding: 14px;
+        border-radius: 15px;
+        border: 1px solid #ddd;
+        width: 92%;
+        margin: 18px auto 0;
+        text-align: left;
+    }
+
+    .summary div {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .btn-proceed {
+        width: 92%;
+        padding: 14px;
+        background: #007aff;
+        color: white;
+        border-radius: 14px;
+        font-size: 17px;
+        font-weight: 600;
+        margin: 18px auto 0;
+        border: none;
+        display: block;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <img src="images/logo.jpeg" class="logo">
+
+    <h2>Order Details</h2>
+
+    <div class="product-box">
+        <img id="prodImg" class="product-img">
+        <div>
+            <div id="prodName" class="product-title"></div>
+            <div id="prodPrice" style="font-weight:600; color:#c62828;">₹0</div>
+        </div>
+    </div>
+
+    <div class="qty-row">
+        <button class="qty-btn" onclick="updateQty(-1)">−</button>
+        <div><strong>Quantity:</strong> <span id="qty">1</span></div>
+        <button class="qty-btn" onclick="updateQty(1)">+</button>
+    </div>
+
+    <input id="custName" class="input-field" placeholder="Your Full Name">
+    <input id="custPhone" class="input-field" placeholder="Phone Number">
+    <textarea id="custAddress" class="input-field" rows="3" placeholder="Full Delivery Address"></textarea>
+    <textarea id="custNotes" class="input-field" rows="2" placeholder="Notes (optional)"></textarea>
+
+    <div class="summary">
+        <div><strong>Price:</strong> ₹<span id="sumPrice">0</span></div>
+        <div><strong>Delivery Charges:</strong> ₹<span id="sumDelivery">30</span></div>
+        <div><strong>Total Amount:</strong> ₹<span id="sumTotal">0</span></div>
+        <div><strong>Expected Delivery:</strong> <span id="deliveryDate"></span></div>
+    </div>
+
+    <button class="btn-proceed" onclick="submitOrder()">Proceed to Payment</button>
+
+</div>
+
+<script>
+let qty = 1;
+const deliveryCharge = 30;
+
+/* Get URL params */
+const params = new URLSearchParams(window.location.search);
+const prodName = params.get("product");
+const prodPrice = parseInt(params.get("price"));
+const prodImg = params.get("img");
+
+/* Fill UI */
+document.getElementById("prodName").textContent = prodName;
+document.getElementById("prodPrice").textContent = "₹" + prodPrice;
+document.getElementById("prodImg").src = prodImg;
+
+/* Update summary section */
+function updateSummary() {
+    let subtotal = prodPrice * qty;
+    let total = subtotal + deliveryCharge;
+
+    document.getElementById("sumPrice").textContent = subtotal;
+    document.getElementById("sumDelivery").textContent = deliveryCharge;
+    document.getElementById("sumTotal").textContent = total;
+
+    let date = new Date();
+    date.setDate(date.getDate() + 7);
+    document.getElementById("deliveryDate").textContent = date.toDateString();
+}
+
+updateSummary();
+
+/* Quantity buttons */
+function updateQty(val) {
+    qty += val;
+    if (qty < 1) qty = 1;
+    document.getElementById("qty").textContent = qty;
+    updateSummary();
+}
+
+/* Submit and go to payment */
+function submitOrder() {
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+    const notes = document.getElementById("custNotes").value.trim();
+
+    if (!name || !phone || !address) {
+        alert("Please fill all required details.");
+        return;
+    }
+
+    const orderData = {
+        product: prodName,
+        price: prodPrice,
+        qty: qty,
+        delivery: deliveryCharge,
+        total: prodPrice * qty + deliveryCharge,
+        name: name,
+        phone: phone,
+        address: address,
+        notes: notes
+    };
+
+    fetch("YOUR_SCRIPT_URL_HERE", {
+        method: "POST",
+        body: JSON.stringify(orderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        const orderId = data.orderId; // ONLY ORDER ID extracted
+
+        window.location.href =
+          `payment.html?orderId=${orderId}&product=${encodeURIComponent(prodName)}&price=${prodPrice}&qty=${qty}&delivery=${deliveryCharge}&img=${prodImg}`;
+    })
+    .catch(() => alert("Network issue. Please try again."));
+}
+</script>
+
+</body>
+</html>

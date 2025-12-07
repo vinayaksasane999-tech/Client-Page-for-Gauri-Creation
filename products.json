@@ -1,0 +1,46 @@
+[
+  {
+    "id": "P001",
+    "name": "Mirror and Pom-Pom Floral Rangoli (Set of 2)",
+    "price": 229,
+    "images": ["rangoli.jpeg"],
+    "description": "Beautiful handcrafted floral rangoli with mirror work and pom-poms. Perfect for festive decor, pooja room and gifting.",
+    "category": "Decor",
+    "weight": "150g",
+    "dimensions": "20cm × 20cm",
+    "stock": 50
+  },
+  {
+    "id": "P002",
+    "name": "Lotus Pom-Pom Tealight Holders (Set of 2)",
+    "price": 179,
+    "images": ["lotus-tealight.jpeg"],
+    "description": "Elegant handcrafted lotus-shaped tealight holders with vibrant pom-poms. Ideal for pooja decor and table styling.",
+    "category": "Decor",
+    "weight": "120g",
+    "dimensions": "15cm × 15cm",
+    "stock": 60
+  },
+  {
+    "id": "P003",
+    "name": "Shubh Labh Hanging Decor",
+    "price": 149,
+    "images": ["shubh-labh.jpeg"],
+    "description": "Traditional Shubh Labh hanging with colorful pom-poms. Perfect for entrance doors, mandir and festive gifting.",
+    "category": "Decor",
+    "weight": "80g",
+    "dimensions": "30cm × 8cm",
+    "stock": 100
+  },
+  {
+    "id": "P004",
+    "name": "Golden Auspicious Nariyal",
+    "price": 229,
+    "images": ["nariyal.jpeg"],
+    "description": "Golden decorative auspicious nariyal, perfect for pooja, griha-pravesh and festive rituals.",
+    "category": "Pooja",
+    "weight": "100g",
+    "dimensions": "10cm × 6cm",
+    "stock": 40
+  }
+]

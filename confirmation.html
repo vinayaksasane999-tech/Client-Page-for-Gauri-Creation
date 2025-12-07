@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed • Gauri Creations</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #86e1ff, #ffd4b8);
+        padding: 20px;
+        color: #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        max-width: 420px;
+        background: #ffffffee;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .tick {
+        font-size: 56px;
+        color: #22c55e;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        margin-top: 22px;
+        width: 100%;
+        padding: 13px;
+        background: #007aff;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+    <div class="tick">✔</div>
+
+    <h2>Order Confirmed!</h2>
+
+    <p><strong>Order ID:</strong> <span id="orderId">–</span></p>
+    <p><strong>Expected Delivery:</strong> <span id="deliveryDate"></span></p>
+
+    <p>Thank you for your purchase 🤍<br>Your order has been successfully placed.</p>
+
+    <button class="btn" onclick="window.location.href='index.html'">Back to Store</button>
+</div>
+
+<script>
+let orderId = new URLSearchParams(window.location.search).get("orderId");
+
+// FIX: remove JSON object if present
+try {
+    orderId = JSON.parse(orderId).orderId;
+} catch (e) {}
+
+document.getElementById("orderId").textContent = orderId;
+
+// Delivery = 7 days from today
+let date = new Date();
+date.setDate(date.getDate() + 7);
+document.getElementById("deliveryDate").textContent = date.toDateString();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gauri Creations Store</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #86e1ff, #ffd4b8);
+    padding: 20px;
+    color: #111827;
+  }
+
+  .top-bar {
+    max-width: 960px;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  }
+
+  .brand {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .track-btn {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(14px);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #111827;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  }
+
+  .hero {
+    max-width: 960px;
+    margin: 0 auto 14px auto;
+    color: #111827;
+  }
+
+  .hero h1 {
+    margin: 4px 0;
+    font-size: 24px;
+  }
+
+  .hero p {
+    margin: 0;
+    font-size: 14px;
+    color: #374151;
+  }
+
+  .controls {
+    max-width: 960px;
+    margin: 0 auto 14px auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5f5;
+    font-size: 14px;
+  }
+
+  .sort-select {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5f5;
+    font-size: 14px;
+    min-width: 160px;
+  }
+
+  .grid {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 18px;
+    padding: 10px 10px 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    backdrop-filter: blur(12px);
+    text-align: center;
+    position: relative;
+  }
+
+  .card img {
+    width: 100%;
+    border-radius: 14px;
+    object-fit: cover;
+    max-height: 160px;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  }
+
+  .card img:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.3);
+  }
+
+  .card-title {
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .card-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c62828;
+    margin: 4px 0 6px;
+  }
+
+  .view-btn {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #007aff;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,122,255,0.4);
+  }
+
+  /* Fullscreen image viewer */
+  #fullscreen-viewer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+  }
+
+  #fullscreen-viewer img {
+    max-width: 92%;
+    max-height: 92%;
+    border-radius: 12px;
+    box-shadow: 0 0 18px rgba(255,255,255,0.4);
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-left">
+    <img src="logo-gauri.jpeg" class="logo" alt="Gauri Creations">
+    <div class="brand">Gauri Creations</div>
+  </div>
+  <a href="track.html" class="track-btn">Track your order</a>
+</div>
+
+<div class="hero">
+  <h1>Festive Home Decor Store</h1>
+  <p>Handcrafted rangolis, tealight holders and auspicious decor pieces.</p>
+</div>
+
+<div class="controls">
+  <input id="searchBox" class="search-input" placeholder="Search products (e.g. lotus, rangoli, shubh labh)">
+  <select id="sortSelect" class="sort-select">
+    <option value="default">Sort: Default</option>
+    <option value="price-asc">Price: Low to High</option>
+    <option value="price-desc">Price: High to Low</option>
+  </select>
+</div>
+
+<div class="grid" id="productGrid">
+  <!-- Lotus -->
+  <div class="card" data-name="lotus pom-pom tealight holders" data-price="179">
+    <img src="lotus-tealight.jpeg" alt="Lotus Pom-Pom Tealight Holders" onclick="openImage('lotus-tealight.jpeg')">
+    <div class="card-title">Lotus Pom-Pom Tealight Holders (Set of 2)</div>
+    <div class="card-price">₹179</div>
+    <a href="product-lotus.html" class="view-btn">View Product</a>
+  </div>
+
+  <!-- Rangoli -->
+  <div class="card" data-name="mirror pom-pom floral rangoli" data-price="229">
+    <img src="rangoli.jpeg" alt="Mirror & Pom-Pom Floral Rangoli" onclick="openImage('rangoli.jpeg')">
+    <div class="card-title">Mirror & Pom-Pom Floral Rangoli (Set of 2)</div>
+    <div class="card-price">₹229</div>
+    <a href="product-rangoli.html" class="view-btn">View Product</a>
+  </div>
+
+  <!-- Shubh Labh -->
+  <div class="card" data-name="shubh labh hanging decor" data-price="149">
+    <img src="shubh-labh.jpeg" alt="Shubh Labh Hanging Decor" onclick="openImage('shubh-labh.jpeg')">
+    <div class="card-title">Shubh Labh Hanging Decor</div>
+    <div class="card-price">₹149</div>
+    <a href="product-shubhlabh.html" class="view-btn">View Product</a>
+  </div>
+
+  <!-- Golden Nariyal -->
+  <div class="card" data-name="golden auspicious nariyal" data-price="229">
+    <img src="nariyal.jpeg" alt="Golden Auspicious Nariyal" onclick="openImage('nariyal.jpeg')">
+    <div class="card-title">Golden Auspicious Nariyal</div>
+    <div class="card-price">₹229</div>
+    <a href="product-nariyal.html" class="view-btn">View Product</a>
+  </div>
+</div>
+
+<!-- Fullscreen viewer -->
+<div id="fullscreen-viewer" onclick="closeImage()">
+  <img id="full-img" alt="Full view">
+</div>
+
+<script>
+const searchBox = document.getElementById("searchBox");
+const sortSelect = document.getElementById("sortSelect");
+const grid = document.getElementById("productGrid");
+
+searchBox.addEventListener("input", () => {
+  const q = searchBox.value.toLowerCase().trim();
+  [...grid.children].forEach(card => {
+    const name = card.getAttribute("data-name");
+    card.style.display = (!q || name.includes(q)) ? "" : "none";
+  });
+});
+
+sortSelect.addEventListener("change", () => {
+  const cards = [...grid.children];
+  if (sortSelect.value === "default") {
+    cards.sort((a,b) => 0);
+  } else if (sortSelect.value === "price-asc") {
+    cards.sort((a,b) => a.getAttribute("data-price") - b.getAttribute("data-price"));
+  } else if (sortSelect.value === "price-desc") {
+    cards.sort((a,b) => b.getAttribute("data-price") - a.getAttribute("data-price"));
+  }
+  cards.forEach(c => grid.appendChild(c));
+});
+
+function openImage(src) {
+  document.getElementById("full-img").src = src;
+  document.getElementById("fullscreen-viewer").style.display = "flex";
+}
+function closeImage() {
+  document.getElementById("fullscreen-viewer").style.display = "none";
+}
+</script>
+
+</body>
+</html>
