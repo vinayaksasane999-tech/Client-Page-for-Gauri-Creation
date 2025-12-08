@@ -10,13 +10,13 @@
         margin: 0;
         padding: 20px;
         font-family: Poppins, sans-serif;
-        background: linear-gradient(135deg, #e3f8ff, #ffe8f0);
+        background: linear-gradient(135deg, #dff6ff, #ffe0ea);
         min-height: 100vh;
     }
 
     h1 {
         text-align: center;
-        font-size: 30px;
+        font-size: 32px;
         font-weight: 700;
         margin-bottom: 20px;
     }
@@ -24,11 +24,11 @@
     /* FILTER BOX */
     .filters {
         background: white;
-        padding: 16px;
-        border-radius: 18px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        padding: 18px;
+        border-radius: 20px;
+        box-shadow: 0 12px 28px rgba(0,0,0,0.12);
         max-width: 1050px;
-        margin: 0 auto 25px auto;
+        margin: 0 auto 28px auto;
     }
 
     .filters input,
@@ -60,24 +60,25 @@
     /* PRODUCT CARD */
     .product-card {
         background: white;
-        padding: 12px;
-        border-radius: 18px;
-        box-shadow: 0 12px 28px rgba(0,0,0,0.15);
-        transition: 0.3s ease;
+        padding: 14px;
+        border-radius: 20px;
+        box-shadow: 0 14px 30px rgba(0,0,0,0.15);
         cursor: pointer;
+        transition: transform .3s, box-shadow .3s;
         transform-style: preserve-3d;
     }
 
     .product-card:hover {
-        transform: rotate3d(1, 1, 0, 10deg) scale(1.04);
+        transform: rotate3d(1,1,0,8deg) scale(1.05);
+        box-shadow: 0 18px 40px rgba(0,0,0,0.18);
     }
 
     .product-img {
         width: 100%;
-        height: 155px;
+        height: 160px;
         object-fit: cover;
         border-radius: 14px;
-        transition: 0.4s;
+        transition: transform .4s;
     }
 
     .product-card:hover .product-img {
@@ -85,13 +86,14 @@
     }
 
     .product-name {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
         margin-top: 10px;
+        min-height: 45px;
     }
 
     .product-price {
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 700;
         color: #e63946;
     }
@@ -99,13 +101,18 @@
     .btn-buy {
         display: block;
         padding: 10px;
-        margin-top: 10px;
+        margin-top: 12px;
         background: #0077ff;
         border-radius: 12px;
         color: white;
         text-align: center;
         text-decoration: none;
         font-weight: 600;
+        transition: .25s;
+    }
+
+    .btn-buy:hover {
+        background: #005dd1;
     }
 
     /* QUICK VIEW POPUP */
@@ -126,7 +133,7 @@
         padding: 18px;
         border-radius: 18px;
         box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        animation: popupShow 0.3s ease;
+        animation: popupShow .3s ease;
     }
 
     @keyframes popupShow {
@@ -225,10 +232,10 @@ function displayProducts(list) {
     grid.innerHTML = "";
 
     list.forEach(p => {
+        const img = p["Image URL 1"];  // FIXED IMAGE COLUMN
+
         const card = document.createElement("div");
         card.className = "product-card";
-
-        const img = p["imageUrl1"] || p["Image URL 1"];  
 
         card.innerHTML = `
             <img src="${img}" class="product-img" onclick="openPopup('${img}', '${p.Name}', \`${p.Description}\`, '${p.Price}')">
