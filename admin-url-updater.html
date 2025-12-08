@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Backend URL Auto-Updater • Gauri Creations</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f8f8f8;
+        padding: 30px;
+    }
+    .box {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 14px;
+        background: #007aff;
+        color: white;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .files {
+        background: #f0f0f0;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 12px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>🔧 Auto-Update Backend URL (Frontend Files)</h2>
+
+    <label><b>New Apps Script URL:</b></label>
+    <input id="newUrl" placeholder="Paste new web-app URL here...">
+
+    <label><b>Select Project Files (.html / .js / .css):</b></label>
+    <input type="file" id="files" multiple accept=".html,.js,.css">
+
+    <button onclick="updateFiles()">Update Files</button>
+
+    <div id="results"></div>
+</div>
+
+<script>
+const URL_PATTERN = /https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_\-]+\/exec/g;
+
+function updateFiles() {
+    const newUrl = document.getElementById("newUrl").value.trim();
+    const fileInput = document.getElementById("files");
+    const results = document.getElementById("results");
+    results.innerHTML = "";
+
+    if (!newUrl) {
+        alert("Please paste the new Apps Script URL.");
+        return;
+    }
+
+    if (!fileInput.files.length) {
+        alert("Please select your project files.");
+        return;
+    }
+
+    [...fileInput.files].forEach(file => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            let content = reader.result;
+            let updated = content.replace(URL_PATTERN, newUrl);
+
+            // Create download button for updated file
+            let blob = new Blob([updated], { type: "text/html" });
+            let url = URL.createObjectURL(blob);
+
+            results.innerHTML += `
+                <div class="files">
+                    ✅ Updated: <b>${file.name}</b><br>
+                    <a href="${url}" download="${file.name}">
+                        ⬇ Download updated file
+                    </a>
+                </div>
+                <br>
+            `;
+        };
+
+        reader.readAsText(file);
+    });
+}
+</script>
+
+</body>
+</html>
