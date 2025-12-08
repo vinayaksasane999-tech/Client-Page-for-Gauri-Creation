@@ -511,7 +511,7 @@ function renderProducts() {
     card.className = "product-card";
 
     const imageUrl =
-      row["imageUrl1"] || row["imageUrl2"] || row["imageUrl3"] || "";
+      row["Image URL 1"] || row["Image URL 2"] || row["Image URL 3"] || "";
 
     const sku = row["SKU"] || "";
     const name = row["Name"] || "";
@@ -523,7 +523,7 @@ function renderProducts() {
 
     if (imageUrl) {
       const img = document.createElement("img");
-      img.src = imageUrl;
+      img.src = Image URL 1;
       thumbDiv.appendChild(img);
     } else {
       thumbDiv.textContent = "🛍️";
@@ -574,10 +574,10 @@ function openEdit(row) {
   document.getElementById("editWidth").value = row["Width"] || "";
   document.getElementById("editHeight").value = row["Height"] || "";
   document.getElementById("editWeight").value = row["Weight"] || "";
-  document.getElementById("editImg1").value = row["imageUrl1"] || "";
-  document.getElementById("editImg2").value = row["imageUrl2"] || "";
-  document.getElementById("editImg3").value = row["imageUrl3"] || "";
-  document.getElementById("editVideo").value = row["videoUrl"] || "";
+  document.getElementById("editImg1").value = row["Image URL 1"] || "";
+  document.getElementById("editImg2").value = row["Image URL 1"] || "";
+  document.getElementById("editImg3").value = row["Image URL 1"] || "";
+  document.getElementById("editVideo").value = row["Video URL"] || "";
   document.getElementById("editCategory").value = row["Category"] || "";
   document.getElementById("editDesc").value = row["Description"] || "";
 
@@ -681,3 +681,4 @@ window.onload = function () {
 
 </body>
 </html>
+
