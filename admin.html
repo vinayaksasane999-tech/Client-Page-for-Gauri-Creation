@@ -8,102 +8,120 @@
 <style>
   :root {
     --bg-grad: linear-gradient(135deg, #86e1ff, #ffd4b8);
-    --glass-bg: rgba(255, 255, 255, 0.22);
-    --glass-border: rgba(255, 255, 255, 0.45);
-    --accent: #007aff;
+    --glass-bg: rgba(255, 255, 255, 0.20);
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --shadow-strong: 0 22px 60px rgba(15, 23, 42, 0.40);
+    --accent-blue: #2563eb;
+    --accent-pink: #ec4899;
+    --accent-green: #22c55e;
+    --accent-amber: #f59e0b;
+    --danger-red: #ef4444;
   }
 
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     margin: 0;
     min-height: 100vh;
-    font-family: "Poppins", system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
     background: var(--bg-grad);
-    padding: 18px;
-    color: #0f172a;
     display: flex;
     justify-content: center;
+    align-items: stretch;
+    padding: 18px;
+    color: #0f172a;
   }
 
   .shell {
     width: 100%;
-    max-width: 1120px;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  /* LOGIN OVERLAY */
+  /* ===========================
+     LOGIN OVERLAY
+     =========================== */
   #loginOverlay {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, #ffffffdd, #000000bb);
+    background: radial-gradient(circle at top, #ffffffee, #000000cc);
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 40;
+    z-index: 50;
   }
 
   .login-box {
-    width: 90%;
-    max-width: 320px;
-    padding: 20px;
-    background: rgba(15, 23, 42, 0.95);
-    border-radius: 18px;
+    width: 92%;
+    max-width: 340px;
+    padding: 22px 20px 18px;
+    background: rgba(15, 23, 42, 0.96);
+    border-radius: 22px;
     color: #e5e7eb;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
     text-align: center;
   }
 
   .login-box h2 {
-    margin: 0 0 8px;
-    font-size: 18px;
+    margin: 0 0 6px;
+    font-size: 20px;
+  }
+
+  .login-sub {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 12px;
   }
 
   .login-input {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 8px;
     padding: 11px 13px;
-    border-radius: 10px;
+    border-radius: 999px;
     border: 1px solid #4b5563;
     background: #020617;
     color: #e5e7eb;
     font-size: 14px;
+    text-align: center;
   }
 
-  .btn-primary-small {
+  .btn-login {
     margin-top: 12px;
-    padding: 10px 16px;
+    padding: 10px 18px;
     border-radius: 999px;
     border: none;
-    background: #22c55e;
+    background: linear-gradient(135deg, #22c55e, #a3e635);
     color: #022c22;
     font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
-    font-size: 13px;
+    width: 100%;
   }
 
-  .error-msg {
+  .login-error {
     font-size: 12px;
     color: #fecaca;
     margin-top: 6px;
     display: none;
   }
 
-  .small {
-    font-size: 12px;
-    color: #9ca3af;
-  }
-
-  /* TOP BAR */
+  /* ===========================
+     TOPBAR
+     =========================== */
   .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 14px;
-    border-radius: 20px;
+    border-radius: 22px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(18px);
-    margin-bottom: 16px;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.28);
+    box-shadow: var(--shadow-strong);
   }
 
   .top-left {
@@ -113,11 +131,11 @@
   }
 
   .logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
     object-fit: cover;
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.5);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.45);
   }
 
   .title-main {
@@ -132,400 +150,412 @@
 
   .top-right {
     display: flex;
-    align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .pill-btn {
-    padding: 6px 12px;
     border-radius: 999px;
-    border: 1px solid #cbd5e1;
-    background: #ffffffcc;
+    border: 1px solid rgba(148, 163, 184, 0.8);
+    background: rgba(255,255,255,0.9);
+    padding: 6px 13px;
     font-size: 12px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #0f172a;
+  }
+
+  .pill-btn span.icon {
+    font-size: 14px;
   }
 
   .pill-btn.primary {
-    background: #ef4444;
-    color: #fff;
-    border-color: #f97373;
+    background: linear-gradient(135deg, #2563eb, #ec4899);
+    color: white;
+    border: none;
   }
 
-  /* LAYOUT */
-  .layout {
+  /* ===========================
+     LAYOUT
+     =========================== */
+  #adminMain {
+    display: none;
+  }
+
+  .main-layout {
     display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 14px;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+    gap: 12px;
   }
 
-  @media (max-width: 860px) {
-    .layout {
-      grid-template-columns: 1fr;
+  @media (max-width: 900px) {
+    .main-layout {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
-  /* SIDEBAR */
-  .nav-card {
-    background: var(--glass-bg);
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
-    padding: 14px 12px;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.32);
-  }
-
-  .nav-title {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6b7280;
-    margin-bottom: 8px;
-  }
-
-  .nav-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .nav-item {
-    margin-bottom: 6px;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: 999px;
-    background: #ffffffdd;
-    border: 1px solid transparent;
-    font-size: 13px;
-    text-decoration: none;
-    color: #111827;
-    cursor: pointer;
-    transition: 0.16s ease;
-  }
-
-  .nav-link span.icon {
-    font-size: 16px;
-  }
-
-  .nav-link:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
-    border-color: #cbd5e1;
-  }
-
-  .nav-link.active {
-    background: linear-gradient(135deg, #e0f2fe, #eff6ff);
-    border-color: rgba(37, 99, 235, 0.7);
-  }
-
-  /* CONTENT */
-  .content {
+  .card {
     border-radius: 22px;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(148, 163, 184, 0.55);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+    background: rgba(255,255,255,0.96);
+    border: 1px solid rgba(148,163,184,0.6);
+    box-shadow: var(--shadow-strong);
     padding: 14px;
   }
 
-  .content-header {
+  .card-header {
     display: flex;
     justify-content: space-between;
     gap: 8px;
     align-items: baseline;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
-  .content-header h2 {
-    margin: 0;
-    font-size: 18px;
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
   }
 
-  .tiny-text {
-    font-size: 12px;
+  .card-sub {
+    font-size: 11px;
     color: #6b7280;
   }
 
-  /* STATS */
-  .stats-grid {
+  /* ===========================
+     METRIC CARDS
+     =========================== */
+  .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-
-  @media (max-width: 960px) {
-    .stats-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 640px) {
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .stat-card {
-    border-radius: 18px;
-    padding: 10px 12px;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-    margin-bottom: 4px;
-  }
-
-  .stat-value {
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .stat-sub {
-    margin-top: 2px;
-    font-size: 11px;
-    color: #9ca3af;
-  }
-
-  /* LOWER GRID */
-  .lower-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
     margin-top: 4px;
   }
 
-  @media (max-width: 960px) {
-    .lower-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .panel {
+  .metric {
     border-radius: 18px;
-    padding: 10px 12px;
-    border: 1px solid #e5e7eb;
-    background: #f9fafb;
+    padding: 10px 11px;
+    background: linear-gradient(135deg, #ffffff, #e5f0ff);
+    border: 1px solid rgba(226,232,240,0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
-  .panel h3 {
-    margin: 0 0 4px;
-    font-size: 14px;
-  }
-
-  .panel small {
+  .metric-label {
     font-size: 11px;
     color: #6b7280;
   }
 
-  .quick-links {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  .metric-value {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .metric-pill {
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+  }
+
+  .metric-pill.blue {
+    background: rgba(37,99,235,0.1);
+    color: #1d4ed8;
+  }
+  .metric-pill.green {
+    background: rgba(34,197,94,0.1);
+    color: #15803d;
+  }
+  .metric-pill.amber {
+    background: rgba(245,158,11,0.12);
+    color: #b45309;
+  }
+  .metric-pill.red {
+    background: rgba(239,68,68,0.12);
+    color: #b91c1c;
+  }
+
+  /* ===========================
+     LATEST ORDERS TABLE
+     =========================== */
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 6px 6px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .orders-table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6b7280;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+  }
+
+  .badge.pending {
+    background: rgba(251,191,36,0.15);
+    color: #92400e;
+  }
+
+  .badge.paid {
+    background: rgba(22,163,74,0.12);
+    color: #166534;
+  }
+
+  .badge.shipped {
+    background: rgba(37,99,235,0.12);
+    color: #1d4ed8;
+  }
+
+  /* ===========================
+     QUICK ACTIONS
+     =========================== */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
     margin-top: 6px;
   }
 
-  .quick-link {
-    font-size: 13px;
-    color: #2563eb;
-    text-decoration: none;
-  }
-
-  .quick-link:hover {
-    text-decoration: underline;
-  }
-
-  .list-mini {
-    list-style: none;
-    padding-left: 0;
-    margin: 6px 0 0;
+  .qa-btn {
+    border-radius: 18px;
+    padding: 9px 10px;
+    background: linear-gradient(135deg, #ffffff, #f5e9ff);
+    border: 1px solid rgba(216,180,254,0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     font-size: 12px;
-    color: #4b5563;
+    text-decoration: none;
+    color: #111827;
+    cursor: pointer;
   }
 
-  .list-mini li {
-    margin-bottom: 4px;
+  .qa-label {
+    font-weight: 600;
+  }
+
+  .qa-sub {
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  /* ===========================
+     STATUS FOOTER
+     =========================== */
+  #statusBar {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 4px;
+    text-align: right;
   }
 </style>
 </head>
-
 <body>
-<div class="shell">
 
-  <!-- LOGIN OVERLAY -->
-  <div id="loginOverlay">
-    <div class="login-box">
-      <h2>Admin Login</h2>
-      <p class="small">Enter your secret PIN to access the dashboard.</p>
-      <input id="adminPin" type="password" class="login-input" placeholder="Admin PIN" />
-      <button id="loginBtn" class="btn-primary-small">Login</button>
-      <div id="loginError" class="error-msg">Incorrect PIN, please try again.</div>
+<div id="loginOverlay">
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <div class="login-sub">
+      Enter your admin PIN to open the Gauri Creations dashboard.
     </div>
-  </div>
-
-  <!-- MAIN DASHBOARD -->
-  <div id="adminMain" style="display:none;">
-
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <div class="top-left">
-        <img src="logo-gauri.jpeg" alt="Gauri Creations" class="logo" />
-        <div>
-          <div class="title-main">Gauri Creations • Admin</div>
-          <div class="subtitle">Control center for orders, products & tracking.</div>
-        </div>
-      </div>
-      <div class="top-right">
-        <button class="pill-btn" onclick="refreshSummary()">Refresh</button>
-        <button class="pill-btn primary" onclick="adminLogout()">Logout</button>
-      </div>
-    </header>
-
-    <!-- MAIN LAYOUT -->
-    <div class="layout">
-
-      <!-- SIDEBAR NAV -->
-      <aside class="nav-card">
-        <div class="nav-title">Navigation</div>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <a class="nav-link active" href="admin.html">
-              <span class="icon">🏠</span>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="admin-orders.html">
-              <span class="icon">📦</span>
-              <span>Orders</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="admin-add-product.html">
-              <span class="icon">➕</span>
-              <span>Add Product</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="admin-manage-products.html">
-              <span class="icon">🧺</span>
-              <span>Manage Products</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="seller-hub.html">
-              <span class="icon">🧑‍🏭</span>
-              <span>Seller Hub</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="admin-analytics.html">
-              <span class="icon">📊</span>
-              <span>Sales & Reports</span>
-            </a>
-          </li>
-        </ul>
-      </aside>
-
-      <!-- CONTENT -->
-      <main class="content">
-        <div class="content-header">
-          <h2>Today’s Overview</h2>
-          <div class="tiny-text" id="todayLine"></div>
-        </div>
-
-        <!-- STATS CARDS -->
-        <section class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Orders Today</div>
-            <div class="stat-value" id="statOrdersToday">–</div>
-            <div class="stat-sub">New + repeat customers</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Revenue Today</div>
-            <div class="stat-value" id="statRevenueToday">₹–</div>
-            <div class="stat-sub">All payment methods</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Pending Orders</div>
-            <div class="stat-value" id="statPending">–</div>
-            <div class="stat-sub">Need packing / shipping</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Delivered This Month</div>
-            <div class="stat-value" id="statDelivered">–</div>
-            <div class="stat-sub">Successfully closed</div>
-          </div>
-        </section>
-
-        <!-- PANELS -->
-        <section class="lower-grid">
-          <div class="panel">
-            <h3>Sales Pulse</h3>
-            <small>Later we’ll plug this into live data & charts.</small>
-            <ul class="list-mini">
-              <li>• Daily revenue & order count</li>
-              <li>• Top-selling products</li>
-              <li>• UPI vs other payment split</li>
-              <li>• Repeat customers performance</li>
-            </ul>
-          </div>
-
-          <div class="panel">
-            <h3>Quick Actions</h3>
-            <small>Most common admin tasks in one tap.</small>
-            <div class="quick-links">
-              <a class="quick-link" href="admin-add-product.html">➕ Add a new product</a>
-              <a class="quick-link" href="admin-orders.html">📦 View & manage orders</a>
-              <a class="quick-link" href="seller-hub.html">🧑‍🏭 Open seller hub</a>
-              <a class="quick-link" href="track.html">🔍 Track order (customer view)</a>
-              <a class="quick-link" href="admin-manage-products.html">🧺 Edit existing products</a>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+    <input id="adminPin" type="password" class="login-input" placeholder="Admin PIN" />
+    <button id="loginBtn" class="btn-login">Unlock Dashboard</button>
+    <div id="loginError" class="login-error">Incorrect PIN. Try again.</div>
   </div>
 </div>
 
+<div class="shell" id="adminMain">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="top-left">
+      <img src="logo-gauri.jpeg" alt="Gauri Creations" class="logo" />
+      <div>
+        <div class="title-main">Admin Dashboard</div>
+        <div class="subtitle">Overview of products, orders & performance.</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <a href="store.html" class="pill-btn">
+        <span class="icon">🛍️</span> View Store
+      </a>
+      <a href="admin-add-product.html" class="pill-btn primary">
+        <span class="icon">➕</span> New Product
+      </a>
+      <button class="pill-btn" onclick="adminLogout()">
+        <span class="icon">🔒</span> Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN GRID -->
+  <main class="main-layout">
+
+    <!-- LEFT SIDE: METRICS + ORDERS -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Snapshot</div>
+          <div class="card-sub">Key metrics from Products & Orders sheets.</div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-label">Total Products</div>
+          <div id="metricProducts" class="metric-value">–</div>
+          <div class="metric-pill.blue">Live in catalog</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Low Stock (&lt;= 5)</div>
+          <div id="metricLowStock" class="metric-value">–</div>
+          <div class="metric-pill.amber">Need restock</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total Orders</div>
+          <div id="metricOrders" class="metric-value">–</div>
+          <div class="metric-pill.green">All-time</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Pending Payments</div>
+          <div id="metricPending" class="metric-value">–</div>
+          <div class="metric-pill.red">Awaiting payment</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 10px;">
+        <div class="card-header" style="margin-bottom:4px;">
+          <div class="card-title">Latest Orders</div>
+          <div class="card-sub">Last few orders from your Orders sheet.</div>
+        </div>
+
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Payment</th>
+            </tr>
+          </thead>
+          <tbody id="latestOrdersBody">
+            <tr><td colspan="5">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDE: QUICK ACTIONS / PANELS -->
+    <aside class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Quick Actions</div>
+          <div class="card-sub">Jump into common admin tools.</div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <a href="admin-add-product.html" class="qa-btn">
+          <div class="qa-label">Add Product</div>
+          <div class="qa-sub">Upload images, set price & stock.</div>
+        </a>
+
+        <a href="admin-manage-products.html" class="qa-btn">
+          <div class="qa-label">Manage Products</div>
+          <div class="qa-sub">Edit details, images & stock.</div>
+        </a>
+
+        <a href="admin-order.html" class="qa-btn">
+          <div class="qa-label">Manage Orders</div>
+          <div class="qa-sub">Update status, AWB & delivery.</div>
+        </a>
+
+        <a href="seller-hub.html" class="qa-btn">
+          <div class="qa-label">Seller Hub</div>
+          <div class="qa-sub">Labels, shipments & partners.</div>
+        </a>
+
+        <a href="track.html" class="qa-btn">
+          <div class="qa-label">Track Panel</div>
+          <div class="qa-sub">Test tracking view like a customer.</div>
+        </a>
+
+        <a href="#" class="qa-btn" onclick="alert('Coming soon: analytics & charts 📊')">
+          <div class="qa-label">Analytics</div>
+          <div class="qa-sub">Sales & performance charts.</div>
+        </a>
+      </div>
+
+      <div id="statusBar">Loading dashboard data…</div>
+    </aside>
+
+  </main>
+
+</div>
+
 <script>
-/* ============================
-   ADMIN LOGIN (same PIN as admin-add-product)
-============================ */
-const ADMIN_PIN = "1234";          // change when you want
+/* ==============================
+   CONFIG
+   ============================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxC4stQOF3JfCFLrYVmudxE6ZVNWo7LxSVxbFejfIaDsDI016HReHbc2FEj4IELSir1uQ/exec"; // update if changed
+const ADMIN_PIN = "1234";
 const ADMIN_FLAG = "gc_admin_auth";
 
-function initAdminLogin() {
+/* ==============================
+   LOGIN HANDLING
+   ============================== */
+function initLogin() {
   const overlay = document.getElementById("loginOverlay");
   const main = document.getElementById("adminMain");
-  const btn = document.getElementById("loginBtn");
-  const pin = document.getElementById("adminPin");
+  const pinInput = document.getElementById("adminPin");
+  const loginBtn = document.getElementById("loginBtn");
   const err = document.getElementById("loginError");
 
-  if (localStorage.getItem(ADMIN_FLAG) === "yes") {
+  function showDashboard() {
     overlay.style.display = "none";
-    main.style.display = "block";
+    main.style.display = "flex";
+    loadDashboard();
+  }
+
+  if (localStorage.getItem(ADMIN_FLAG) === "yes") {
+    showDashboard();
   } else {
     overlay.style.display = "flex";
   }
 
-  btn.onclick = function () {
-    if (pin.value.trim() === ADMIN_PIN) {
+  loginBtn.onclick = function () {
+    if ((pinInput.value || "").trim() === ADMIN_PIN) {
       localStorage.setItem(ADMIN_FLAG, "yes");
-      overlay.style.display = "none";
-      main.style.display = "block";
+      showDashboard();
     } else {
       err.style.display = "block";
     }
   };
+
+  pinInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") loginBtn.click();
+  });
 }
 
 function adminLogout() {
@@ -533,34 +563,124 @@ function adminLogout() {
   location.reload();
 }
 
-/* ============================
-   SUMMARY PLACEHOLDER
-   (Later we’ll fetch from Sheet)
-============================ */
-function refreshSummary() {
-  const today = new Date();
-  const todayString = today.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
-  document.getElementById("todayLine").textContent = "Today • " + todayString;
+/* ==============================
+   DASHBOARD DATA LOADING
+   ============================== */
+async function loadDashboard() {
+  const statusBar = document.getElementById("statusBar");
+  statusBar.textContent = "Loading products & orders…";
 
-  // For now, we leave stats as dashes.
-  // Later we will calculate these from your Orders sheet via Apps Script.
-  document.getElementById("statOrdersToday").textContent = "–";
-  document.getElementById("statRevenueToday").textContent = "₹–";
-  document.getElementById("statPending").textContent = "–";
-  document.getElementById("statDelivered").textContent = "–";
+  try {
+    const [productsRes, ordersRes] = await Promise.all([
+      fetch(SCRIPT_URL + "?action=getProducts"),
+      fetch(SCRIPT_URL + "?action=listOrders")
+    ]);
+
+    const productsData = await productsRes.json();
+    const ordersData = await ordersRes.json();
+
+    const products = productsData.products || [];
+    const orders = ordersData.orders || [];
+
+    updateMetrics(products, orders);
+    renderLatestOrders(orders);
+
+    statusBar.textContent = `Loaded ${products.length} products & ${orders.length} orders.`;
+  } catch (err) {
+    console.error(err);
+    statusBar.textContent = "Error loading dashboard. Please refresh.";
+  }
 }
 
-/* ============================
+function updateMetrics(products, orders) {
+  // Total products
+  document.getElementById("metricProducts").textContent = products.length;
+
+  // Low stock <= 5
+  const lowStockCount = products.filter(p => {
+    const stock = Number(p["Stock"] || 0);
+    return stock > 0 && stock <= 5;
+  }).length;
+  document.getElementById("metricLowStock").textContent = lowStockCount;
+
+  // Orders
+  document.getElementById("metricOrders").textContent = orders.length;
+
+  // Pending payments
+  const pendingPayments = orders.filter(o => {
+    const pay = (o["Payment Status"] || "").toString().toLowerCase();
+    return pay === "pending" || pay === "unpaid" || pay === "";
+  }).length;
+  document.getElementById("metricPending").textContent = pendingPayments;
+}
+
+function renderLatestOrders(allOrders) {
+  const tbody = document.getElementById("latestOrdersBody");
+  tbody.innerHTML = "";
+
+  if (!allOrders.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.textContent = "No orders yet.";
+    tbody.appendChild(tr);
+    tr.appendChild(td);
+    return;
+  }
+
+  // Sort by Timestamp descending if exists
+  const orders = [...allOrders].sort((a, b) => {
+    const t1 = new Date(a["Timestamp"] || 0).getTime();
+    const t2 = new Date(b["Timestamp"] || 0).getTime();
+    return t2 - t1;
+  }).slice(0, 6); // latest 6
+
+  orders.forEach(o => {
+    const tr = document.createElement("tr");
+
+    const tdId = document.createElement("td");
+    tdId.textContent = o["Order ID"] || "-";
+
+    const tdProd = document.createElement("td");
+    tdProd.textContent = o["Product Name"] || "-";
+
+    const tdTotal = document.createElement("td");
+    tdTotal.textContent = "₹" + (o["Total"] || "0");
+
+    const tdStatus = document.createElement("td");
+    const sBadge = document.createElement("span");
+    sBadge.className = "badge";
+    const statusText = (o["Status"] || "Order Received").toString();
+    sBadge.textContent = statusText;
+
+    if (/delivered/i.test(statusText)) sBadge.classList.add("paid");
+    else if (/shipped|dispatched/i.test(statusText)) sBadge.classList.add("shipped");
+    else sBadge.classList.add("pending");
+    tdStatus.appendChild(sBadge);
+
+    const tdPay = document.createElement("td");
+    const pBadge = document.createElement("span");
+    pBadge.className = "badge";
+    const payText = (o["Payment Status"] || "Pending").toString();
+    pBadge.textContent = payText;
+    if (/paid/i.test(payText)) pBadge.classList.add("paid");
+    else pBadge.classList.add("pending");
+    tdPay.appendChild(pBadge);
+
+    tr.appendChild(tdId);
+    tr.appendChild(tdProd);
+    tr.appendChild(tdTotal);
+    tr.appendChild(tdStatus);
+    tr.appendChild(tdPay);
+
+    tbody.appendChild(tr);
+  });
+}
+
+/* ==============================
    INIT
-============================ */
-window.onload = function () {
-  initAdminLogin();
-  refreshSummary();
-};
+   ============================== */
+window.onload = initLogin;
 </script>
 
 </body>
