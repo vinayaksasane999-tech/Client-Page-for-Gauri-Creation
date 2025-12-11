@@ -25,6 +25,12 @@
         border-radius: 20px;
         text-align: center;
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     .tick {
@@ -34,7 +40,7 @@
     }
 
     .btn {
-        margin-top: 22px;
+        margin-top: 18px;
         width: 100%;
         padding: 13px;
         background: #007aff;
@@ -43,6 +49,20 @@
         border-radius: 12px;
         font-size: 16px;
         font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-track {
+        margin-top: 12px;
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg,#2563eb,#ec4899);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
     }
 </style>
 
@@ -61,12 +81,16 @@
     <p>Thank you for your purchase 🤍<br>Your order has been successfully placed.</p>
 
     <button class="btn" onclick="window.location.href='store.html'">Back to Store</button>
+
+    <!-- ⭐ NEW TRACK BUTTON ⭐ -->
+    <button class="btn-track" id="trackBtn">Track Your Parcel</button>
+
 </div>
 
 <script>
 let orderId = new URLSearchParams(window.location.search).get("orderId");
 
-// FIX: remove JSON object if present
+// If orderId came in JSON format, fix it
 try {
     orderId = JSON.parse(orderId).orderId;
 } catch (e) {}
@@ -77,8 +101,12 @@ document.getElementById("orderId").textContent = orderId;
 let date = new Date();
 date.setDate(date.getDate() + 7);
 document.getElementById("deliveryDate").textContent = date.toDateString();
+
+// ⭐ Redirect to track.html with orderId auto-filled
+document.getElementById("trackBtn").onclick = () => {
+    window.location.href = "track.html?orderId=" + encodeURIComponent(orderId);
+};
 </script>
 
 </body>
-
 </html>
