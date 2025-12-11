@@ -4,130 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order • Gauri Creations</title>
-
 <style>
-    body {
-        margin: 0;
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #86e1ff, #ffd4b8);
-        padding: 20px;
-        color: #222;
-    }
-
-    .container {
-        max-width: 470px;
-        margin: auto;
-        background: #ffffffd8;
-        padding: 25px;
-        border-radius: 22px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-        text-align: center;
-    }
-
-    .logo {
-        width: 130px;
-        display: block;
-        margin: 0 auto 20px;
-        border-radius: 12px;
-    }
-
-    h2 {
-        margin-bottom: 10px;
-        font-size: 22px;
-        font-weight: 700;
-    }
-
-    .product-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 18px;
-        text-align: left;
-    }
-
-    .product-img {
-        width: 95px;
-        height: 95px;
-        border-radius: 15px;
-        object-fit: cover;
-    }
-
-    .product-title {
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .input-field {
-        width: 92%;
-        margin: 12px auto 0;
-        display: block;
-        padding: 13px;
-        border-radius: 12px;
-        border: 1px solid #bbb;
-        font-size: 15px;
-    }
-
-    .qty-row {
-        width: 92%;
-        margin: 18px auto 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .qty-btn {
-        padding: 8px 16px;
-        border-radius: 10px;
-        background: #007aff;
-        color: white;
-        border: none;
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .summary {
-        background: #fff;
-        padding: 14px;
-        border-radius: 15px;
-        border: 1px solid #ddd;
-        width: 92%;
-        margin: 18px auto 0;
-        text-align: left;
-    }
-
-    .summary div {
-        font-size: 15px;
-        margin-bottom: 6px;
-    }
-
-    .btn-proceed {
-        width: 92%;
-        padding: 14px;
-        background: #007aff;
-        color: white;
-        border-radius: 14px;
-        font-size: 17px;
-        font-weight: 600;
-        margin: 18px auto 0;
-        border: none;
-        display: block;
-    }
+    body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradient(135deg, #86e1ff, #ffd4b8); padding: 20px; color: #222; }
+    .container { max-width: 470px; margin: auto; background: #ffffffd8; padding: 25px; border-radius: 22px; backdrop-filter: blur(10px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); text-align: center; }
+    .logo { width: 130px; display: block; margin: 0 auto 20px; border-radius: 12px; }
+    h2 { margin-bottom: 10px; font-size: 22px; font-weight: 700; }
+    .product-box { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 18px; text-align: left; }
+    .product-img { width: 95px; height: 95px; border-radius: 15px; object-fit: cover; }
+    .product-title { font-size: 18px; font-weight: 600; }
+    .input-field { width: 92%; margin: 12px auto 0; display: block; padding: 13px; border-radius: 12px; border: 1px solid #bbb; font-size: 15px; }
+    .qty-row { width: 92%; margin: 18px auto 14px; display: flex; justify-content: space-between; align-items: center; }
+    .qty-btn { padding: 8px 16px; border-radius: 10px; background: #007aff; color: white; border: none; font-size: 18px; font-weight: 600; }
+    .summary { background: #fff; padding: 14px; border-radius: 15px; border: 1px solid #ddd; width: 92%; margin: 18px auto 0; text-align: left; }
+    .summary div { font-size: 15px; margin-bottom: 6px; }
+    .btn-proceed { width: 92%; padding: 14px; background: #007aff; color: white; border-radius: 14px; font-size: 17px; font-weight: 600; margin: 18px auto 0; border: none; display: block; }
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
-    <img src="logo-gauri.jpeg" class="logo">
-
+    <img src="logo-gauri.jpeg" class="logo" alt="Gauri">
     <h2>Order Details</h2>
 
     <div class="product-box">
-        <img id="prodImg" class="product-img">
-        <div>
+        <img id="prodImg" class="product-img" src="" alt="Product">
+        <div style="text-align:left;">
             <div id="prodName" class="product-title"></div>
             <div id="prodPrice" style="font-weight:600; color:#c62828;">₹0</div>
         </div>
@@ -146,95 +46,154 @@
 
     <div class="summary">
         <div><strong>Price:</strong> ₹<span id="sumPrice">0</span></div>
-        <div><strong>Delivery Charges:</strong> ₹<span id="sumDelivery">30</span></div>
+        <div><strong>Delivery Charges:</strong> ₹<span id="sumDelivery">0</span></div>
         <div><strong>Total Amount:</strong> ₹<span id="sumTotal">0</span></div>
         <div><strong>Expected Delivery:</strong> <span id="deliveryDate"></span></div>
     </div>
 
     <button class="btn-proceed" onclick="submitOrder()">Proceed to Payment</button>
-
 </div>
 
 <script>
+/* uses same script endpoint as backend createOrder action */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+
 let qty = 1;
-const deliveryCharge = 30;
 
-/* Read product params */
+/* Read product params from query string — accepts product OR sku + price */
 const params = new URLSearchParams(window.location.search);
-const prodName = params.get("product");
-const prodPrice = parseInt(params.get("price"));
-const prodImg = params.get("img");
+let prodName = params.get("product") || params.get("name") || "";
+let prodPrice = parseFloat(params.get("price") || params.get("amount") || "0");
+let prodImg = params.get("img") || "";
+const sku = params.get("sku") || "";
 
-/* Fill product info */
-document.getElementById("prodName").textContent = prodName;
-document.getElementById("prodPrice").textContent = "₹" + prodPrice;
-document.getElementById("prodImg").src = prodImg;
-
-/* Update summary box */
-function updateSummary() {
-    let subtotal = prodPrice * qty;
-    let total = subtotal + deliveryCharge;
-
-    document.getElementById("sumPrice").textContent = subtotal;
-    document.getElementById("sumDelivery").textContent = deliveryCharge;
-    document.getElementById("sumTotal").textContent = total;
-
-    let date = new Date();
-    date.setDate(date.getDate() + 7);
-    document.getElementById("deliveryDate").textContent = date.toDateString();
-}
-updateSummary();
-
-/* Quantity update */
-function updateQty(val) {
-    qty += val;
-    if (qty < 1) qty = 1;
-    document.getElementById("qty").textContent = qty;
-    updateSummary();
+function safeDecode(v){ try{ return decodeURIComponent(v||""); }catch(e){ return v||""; } }
+prodName = safeDecode(prodName);
+prodImg = safeDecode(prodImg);
+if(!prodPrice && sku){
+  // Try fetching product detail by sku if price missing
+  fetch(SCRIPT_URL + "?action=getProduct&sku=" + encodeURIComponent(sku))
+    .then(r=>r.json()).then(d=>{
+      if(d && d.success && d.product){
+        const p = d.product;
+        if(!prodName) prodName = p["Name"] || "";
+        if(!prodPrice) prodPrice = Number(p["Price"] || 0);
+        if(!prodImg) prodImg = p["Image URL 1"] || "";
+        fillProduct();
+        updateSummary();
+      }
+    }).catch(()=>{ fillProduct(); updateSummary(); });
+} else {
+  fillProduct();
+  updateSummary();
 }
 
-/* Submit order to Google Apps Script */
-function submitOrder() {
-    const name = document.getElementById("custName").value.trim();
-    const phone = document.getElementById("custPhone").value.trim();
-    const address = document.getElementById("custAddress").value.trim();
-    const notes = document.getElementById("custNotes").value.trim();
+function fillProduct(){
+  document.getElementById("prodName").textContent = prodName || "(Product)";
+  document.getElementById("prodPrice").textContent = "₹" + (prodPrice || 0);
+  document.getElementById("prodImg").src = prodImg || "logo-gauri.jpeg";
+}
 
-    if (!name || !phone || !address) {
-        alert("Please fill all required details.");
-        return;
-    }
+/* shipping rules — same simple rules used elsewhere */
+function calcDelivery(pincode){
+  if(!pincode) return 79;
+  const pc = String(pincode).trim();
+  if(/^4/.test(pc)) return 49;
+  if(/^5/.test(pc)) return 59;
+  if(/^6/.test(pc)) return 69;
+  return 79;
+}
 
-    const orderData = {
-        product: prodName,
-        price: prodPrice,
-        qty: qty,
-        delivery: deliveryCharge,
-        total: prodPrice * qty + deliveryCharge,
-        name: name,
-        phone: phone,
-        address: address,
-        notes: notes
-    };
+/* update summary */
+function updateSummary(){
+  const subtotal = (prodPrice || 0) * qty;
+  // try to read pincode from address field start (first 6 digits) — if not present, default charge
+  const addr = (document.getElementById("custAddress").value || "").trim();
+  const pinMatch = addr.match(/\b(\d{6})\b/);
+  const pincode = pinMatch ? pinMatch[1] : "";
+  const delivery = calcDelivery(pincode);
+  const total = subtotal + delivery;
 
-    // IMPORTANT — Uses .text() NOT .json()
-    fetch("https://script.google.com/macros/s/AKfycbxfBmWy12Kl_QDezLS7Cad1B2KLuKE-pVxG7wDquxGKvJZVVLOofnGniAhDer6R62e3hw/exec", {
-        method: "POST",
-        body: JSON.stringify(orderData)
-    })
-    .then(res => res.text())   // FIXED
-    .then(orderId => {
+  document.getElementById("sumPrice").textContent = subtotal;
+  document.getElementById("sumDelivery").textContent = delivery;
+  document.getElementById("sumTotal").textContent = total;
 
-        window.location.href =
-            `payment.html?orderId=${orderId}&product=${encodeURIComponent(prodName)}&price=${prodPrice}&qty=${qty}&delivery=${deliveryCharge}&img=${prodImg}`;
-    })
-    .catch(() => alert("Network issue. Please try again."));
+  let date = new Date();
+  date.setDate(date.getDate() + 7);
+  document.getElementById("deliveryDate").textContent = date.toDateString();
+}
+document.getElementById("custAddress").addEventListener("input", updateSummary);
+
+function updateQty(val){
+  qty = Math.max(1, qty + val);
+  document.getElementById("qty").textContent = qty;
+  updateSummary();
+}
+
+/* Submit order -> call createOrder (backend) */
+async function submitOrder(){
+  const name = document.getElementById("custName").value.trim();
+  const phone = document.getElementById("custPhone").value.trim();
+  const address = document.getElementById("custAddress").value.trim();
+  const notes = document.getElementById("custNotes").value.trim();
+
+  if(!name || !phone || !address){
+    alert("Please fill name, phone and address.");
+    return;
+  }
+
+  const pincodeMatch = address.match(/\b(\d{6})\b/);
+  const pincode = pincodeMatch ? pincodeMatch[1] : "";
+
+  const delivery = calcDelivery(pincode);
+  const subtotal = (prodPrice || 0) * qty;
+  const total = subtotal + delivery;
+
+  const payload = {
+    productSku: sku || "",
+    productName: prodName || "",
+    qty: qty,
+    price: prodPrice || 0,
+    delivery: delivery,
+    total: total,
+    name: name,
+    phone: phone,
+    email: "",
+    address: address,
+    notes: notes
+  };
+
+  try{
+    const btn = document.querySelector(".btn-proceed");
+    if(btn){ btn.disabled = true; btn.textContent = "Creating order…"; }
+
+    const res = await fetch(SCRIPT_URL + "?action=createOrder", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(!data || !data.success) throw new Error(data && data.message ? data.message : "Order creation failed");
+
+    const orderId = data.orderId || data.order_id || "";
+
+    // Redirect to your payment page; pass necessary params
+    const params = new URLSearchParams({
+      orderId: orderId,
+      product: prodName,
+      price: subtotal.toString(),
+      qty: String(qty),
+      delivery: String(delivery),
+      img: prodImg || ""
+    });
+    window.location.href = `payment.html?${params.toString()}`;
+
+  }catch(err){
+    console.error(err);
+    alert("Error creating order: " + (err.message || err));
+    const btn = document.querySelector(".btn-proceed");
+    if(btn){ btn.disabled = false; btn.textContent = "Proceed to Payment"; }
+  }
 }
 </script>
-
 </body>
 </html>
-
-
-
-
