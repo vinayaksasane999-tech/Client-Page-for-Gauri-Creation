@@ -110,9 +110,25 @@
         text-align: center;
     }
 
+    /* Back to Store Button */
+    .back-btn {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        background: #fff;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        color: #007aff;
+        border: 1px solid #bcdcff;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        text-decoration: none;
+    }
 </style>
 </head>
 <body>
+
+<a href="store.html" class="back-btn">⟵ Store</a>
 
 <div class="container">
 
@@ -120,7 +136,7 @@
     <h2>Track Your Order</h2>
 
     <input id="orderInput" placeholder="Enter Order ID">
-    <button class="btn" onclick="trackOrder()">Check Status</button>
+    <button class="btn" onclick="manualTrack()">Check Status</button>
 
     <h3 id="orderTitle"></h3>
 
@@ -138,7 +154,7 @@
 </div>
 
 <script>
-const API_URL =
+const API_URL = 
   "https://script.google.com/macros/s/AKfycbxD6kFEU1QkcoX-ZFRz540bEPwaIECaST-Ogxq9UEs9LAnsx7Hq1yDzjkRTpmeaAL_j7A/exec";
 
 const STATUS_INDEX = {
@@ -158,17 +174,11 @@ function highlightSteps(level) {
     }
 }
 
-function trackOrder() {
-    let id = document.getElementById("orderInput").value.trim().toUpperCase();
-    if (!id) {
-        alert("Please enter a valid Order ID");
-        return;
-    }
-
+function fetchStatus(id) {
     fetch(API_URL + "?track=" + id)
     .then(res => res.json())
     .then(data => {
-        if (!data.status) {
+        if (!data || !data.status) {
             alert("Order not found");
             return;
         }
@@ -178,18 +188,33 @@ function trackOrder() {
 
         highlightSteps(STATUS_INDEX[data.status]);
 
-        // Delivery date
         document.getElementById("deliveryDate").textContent =
-            data.deliveryDate ? 
-            ("Expected Delivery: " + data.deliveryDate) :
-            "";
+            data.deliveryDate ? "Expected Delivery: " + data.deliveryDate : "";
     })
     .catch(() => alert("Network error. Please try again."));
 }
+
+/* Manual button click */
+function manualTrack() {
+    let id = document.getElementById("orderInput").value.trim().toUpperCase();
+    if (!id) {
+        alert("Please enter a valid Order ID");
+        return;
+    }
+    fetchStatus(id);
+}
+
+/* ⭐ AUTO-RUN WHEN ?orderId=XYZ IS PRESENT */
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const autoId = params.get("orderId");
+
+    if (autoId) {
+        document.getElementById("orderInput").value = autoId;
+        fetchStatus(autoId.trim().toUpperCase());
+    }
+});
 </script>
 
 </body>
-
 </html>
-
-
