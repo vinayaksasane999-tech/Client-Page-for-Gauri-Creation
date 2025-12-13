@@ -6,62 +6,64 @@
 <title>Login • Gauri Creations</title>
 
 <style>
-* { box-sizing: border-box; }
-
 body{
   margin:0;
-  height:100vh;
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:Poppins, system-ui;
+  font-family:Poppins,system-ui;
   background:linear-gradient(135deg,#86e1ff,#ffd4b8);
 }
-
 .card{
   width:100%;
-  max-width:360px;
+  max-width:380px;
   background:#ffffffee;
   padding:28px;
   border-radius:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
-
 .logo{
   width:110px;
   border-radius:14px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
-
-h2{ margin:10px 0 20px }
-
+h2{margin:6px 0 14px}
 input{
   width:100%;
   padding:13px;
+  margin-top:12px;
   border-radius:12px;
-  border:1px solid #bbb;
+  border:1px solid #ccc;
   font-size:15px;
-  margin-bottom:12px;
 }
-
 button{
   width:100%;
   padding:14px;
+  margin-top:18px;
   border:none;
   border-radius:14px;
-  background:#007aff;
-  color:white;
+  background:linear-gradient(135deg,#2563eb,#ec4899);
+  color:#fff;
   font-size:16px;
   font-weight:600;
   cursor:pointer;
 }
-
-.link{
+.small{
+  font-size:13px;
   margin-top:14px;
-  font-size:14px;
 }
-.link a{ color:#007aff; text-decoration:none; font-weight:600; }
+.small a{
+  color:#2563eb;
+  font-weight:600;
+  text-decoration:none;
+}
+.error{
+  color:#dc2626;
+  font-size:13px;
+  margin-top:10px;
+}
 </style>
 </head>
 
@@ -69,27 +71,31 @@ button{
 
 <div class="card">
   <img src="logo-gauri.jpeg" class="logo">
-  <h2>Login</h2>
+  <h2>Customer Login</h2>
 
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
+  <div id="error" class="error"></div>
 
-  <div class="link">
-    New user? <a href="register.html">Register</a>
+  <div class="small">
+    New here? <a href="register.html">Create account</a>
   </div>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
 
 async function login(){
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
+  const errorBox = document.getElementById("error");
+  errorBox.textContent = "";
 
   if(!email || !password){
-    alert("Please enter email & password");
+    errorBox.textContent = "Please enter email and password";
     return;
   }
 
@@ -98,22 +104,22 @@ async function login(){
       method:"POST",
       body:JSON.stringify({ email, password })
     });
+
     const data = await res.json();
 
     if(!data.success){
-      alert("Invalid login details");
+      errorBox.textContent = "Invalid email or password";
       return;
     }
 
-    // Save session
-    localStorage.setItem("customer", JSON.stringify(data.customer));
+    // ✅ SAVE SESSION
+    localStorage.setItem("gc_customer", JSON.stringify(data.customer));
 
-    // ✅ REDIRECT (this was missing earlier)
+    // ✅ REDIRECT (THIS WAS MISSING EARLIER)
     window.location.href = "store.html";
 
   }catch(err){
-    alert("Login failed");
-    console.error(err);
+    errorBox.textContent = "Network error. Try again.";
   }
 }
 </script>
