@@ -6,9 +6,7 @@
 <title>Login • Gauri Creations</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -30,18 +28,15 @@ body{
   text-align:center;
 }
 
-h2{
-  margin-bottom:10px;
-}
+h2{ margin-bottom:10px; }
 
 input{
   width:100%;
   padding:13px;
-  margin:12px 0 0;
+  margin-top:12px;
   border-radius:12px;
   border:1px solid #ccc;
   font-size:15px;
-  display:block;
 }
 
 button{
@@ -78,15 +73,14 @@ button{
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+/* ✅ UPDATED WEB APP URL */
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
 
 async function login(){
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
   const errorBox = document.getElementById("error");
-
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
 
   errorBox.textContent = "";
 
@@ -96,14 +90,13 @@ async function login(){
   }
 
   try{
-    const res = await fetch(SCRIPT_URL + "?action=customerLogin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
+    const url =
+      SCRIPT_URL +
+      "?action=customerLogin" +
+      "&email=" + encodeURIComponent(email) +
+      "&password=" + encodeURIComponent(password);
 
+    const res = await fetch(url);
     const data = await res.json();
 
     if(!data.success){
@@ -111,10 +104,10 @@ async function login(){
       return;
     }
 
-    // ✅ SINGLE, CONSISTENT SESSION KEY
+    // ✅ Save customer session
     localStorage.setItem("gc_customer", JSON.stringify(data.customer));
 
-    // ✅ REDIRECT
+    // ✅ Redirect to store
     window.location.href = "store.html";
 
   }catch(err){
