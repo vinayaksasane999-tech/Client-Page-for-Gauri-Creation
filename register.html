@@ -3,72 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register • Gauri Creations</title>
+<title>Create Account • Gauri Creations</title>
 
 <style>
-:root{
-  --accent: linear-gradient(135deg,#2563eb,#ec4899);
-}
-*{box-sizing:border-box}
-
 body{
   margin:0;
   min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   font-family:Poppins,system-ui;
-  background:linear-gradient(135deg,#86e1ff,#ffd4b8);
+  background:linear-gradient(135deg,#8fd3f4,#fbc2eb);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
 }
 
-/* CARD */
 .card{
   width:100%;
-  max-width:420px;
-  background:#ffffffee;
-  padding:26px;
-  border-radius:22px;
-  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  max-width:400px;
+  background:#ffffff;
+  border-radius:26px;
+  padding:28px 22px;
   text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
 
-/* LOGO */
 .logo{
   width:90px;
   border-radius:14px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
-/* INPUTS */
-input,textarea{
-  width:100%;
-  padding:14px;
-  margin-top:14px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:15px;
+h2{margin:8px 0}
+.sub{color:#666;font-size:14px;margin-bottom:20px}
+
+/* ⭐ FIX */
+.form{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
 }
 
-/* BUTTON */
-button{
+.form input,
+.form textarea{
   width:100%;
-  margin-top:18px;
+  max-width:320px;
   padding:14px;
-  border:none;
-  border-radius:999px;
-  background:var(--accent);
-  color:#fff;
   font-size:16px;
+  border-radius:14px;
+  border:1px solid #ccc;
+  outline:none;
+  box-sizing:border-box;
+}
+/* ⭐ FIX */
+
+textarea{resize:none}
+
+.btn{
+  width:100%;
+  max-width:320px;
+  padding:14px;
+  border-radius:999px;
+  border:none;
+  font-size:17px;
   font-weight:600;
-  cursor:pointer;
+  background:linear-gradient(135deg,#2563eb,#ec4899);
+  color:#fff;
+  margin-top:8px;
 }
 
-/* LINKS */
-.small{
+.footer{
   margin-top:14px;
-  font-size:13px;
+  font-size:14px;
 }
-a{color:#2563eb;text-decoration:none;font-weight:600}
+.footer a{color:#2563eb;text-decoration:none;font-weight:600}
 </style>
 </head>
 
@@ -76,49 +84,42 @@ a{color:#2563eb;text-decoration:none;font-weight:600}
 
 <div class="card">
   <img src="logo-gauri.jpeg" class="logo">
-
   <h2>Create Account</h2>
-  <p style="color:#555;font-size:14px">Join Gauri Creations</p>
+  <div class="sub">Join Gauri Creations</div>
 
-  <input id="name" placeholder="Full Name">
-  <input id="email" placeholder="Email">
-  <input id="phone" placeholder="Phone Number">
-  <textarea id="address" rows="3" placeholder="Address"></textarea>
-  <input id="password" type="password" placeholder="Password">
+  <div class="form">
+    <input id="name" placeholder="Full Name">
+    <input id="email" placeholder="Email">
+    <input id="phone" placeholder="Phone Number">
+    <textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn" onclick="register()">Register</button>
+  </div>
 
-  <button onclick="register()">Create Account</button>
-
-  <div class="small">
-    Already have an account? <a href="login.html">Login</a>
+  <div class="footer">
+    Already registered? <a href="login.html">Login</a>
   </div>
 </div>
 
 <script>
-const API = "YOUR_SCRIPT_URL";
+const SCRIPT_URL = "YOUR_SCRIPT_URL";
 
 function register(){
-  const body={
-    name:name.value.trim(),
-    email:email.value.trim(),
-    phone:phone.value.trim(),
-    address:address.value.trim(),
-    password:password.value.trim()
-  };
-
-  if(Object.values(body).some(v=>!v)){
-    alert("Fill all fields");
-    return;
-  }
-
-  fetch(API+"?action=customerSignup",{
+  fetch(SCRIPT_URL+"?action=customerSignup",{
     method:"POST",
-    body:JSON.stringify(body)
+    body:JSON.stringify({
+      name:name.value,
+      email:email.value,
+      phone:phone.value,
+      address:address.value,
+      password:password.value
+    })
   })
   .then(r=>r.json())
   .then(d=>{
-    if(!d.success) return alert("Signup failed");
-    alert("Account created successfully ❤️");
-    window.location.href="login.html";
+    if(!d.success) return alert("Registration failed");
+    alert("Account created!");
+    location.href="login.html";
   });
 }
 </script>
