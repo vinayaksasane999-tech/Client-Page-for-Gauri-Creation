@@ -139,7 +139,11 @@ if (!user) {
 }
 document.getElementById("welcomeText").textContent = "Welcome, " + user.name;
 
-/* DROPDOWN MENU */
+/* ========== CONFIG ========== */
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec"
+
+/* ========== DROPDOWN MENU ========== */
 function toggleMenu(){
     const m = document.getElementById("menuList");
     m.style.display = m.style.display === "block" ? "none" : "block";
@@ -149,7 +153,44 @@ function logoutUser(){
     window.location.href = "login.html";
 }
 
-/* — Your existing JS for loading products (unchanged) — */
+/* ========== LOAD PRODUCTS========== */
+async function loadProducts(){
+  try{
+    const res = await fetch(SCRIPT_URL + "?action=getProducts")
+    const products = await res.json();
+
+    const grid = document.getElementByID("grid");
+    grid.innerHTML = "";
+
+    if(!products.length){
+      grid.innerHTML = "<p>No Products available</p>;
+      return;
+  }
+    
+documents.getElementById("summaryTotal").textContent = products.length;
+
+products.forEach(p => {
+  const card = document.createElement("div");
+  card.className = "product-card";
+
+  card.innerHTML = '
+    <div class="product-img-wrap">
+     <img src="${p.image}" class="product-img">
+  </div>
+  <strong>${p.name}</strong>
+  <div>${p.price}</div>
+  <button class="btn-primary">Buy Now</button>
+  ':
+  grid.appendChild(card);
+  });
+  }cacth(err){
+   console.error(err);
+   document.getElementById("grid").innerHTML =
+     "<p style='color:red'>Failed to load products</p>";
+  }
+  }
+/* ========== INIT ========== */
+loadProducts();
 </script>
 
 </body>
