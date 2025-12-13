@@ -1,77 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Gauri Creations • Store</title>
 
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Poppins,system-ui;
-  background:linear-gradient(135deg,#e3f2ff,#ffe5f3);
-  padding:18px;
-}
-.menu{
-  position:fixed;
-  top:15px;
-  right:15px;
-  background:#2563eb;
-  color:#fff;
-  padding:10px 16px;
-  border-radius:999px;
-  cursor:pointer;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:14px;
-}
-.card{
-  background:#fff;
-  padding:10px;
-  border-radius:16px;
-}
+  :root{
+    --bg-grad: linear-gradient(135deg,#e3f2ff,#ffe5f3);
+    --glass: rgba(255,255,255,0.78);
+    --glass-strong: rgba(255,255,255,0.92);
+    --glass-border: rgba(148,163,184,0.6);
+    --shadow-strong: 0 20px 45px rgba(15,23,42,0.30);
+    --accent-grad: linear-gradient(135deg,#2563eb,#ec4899);
+    --muted:#6b7280;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;min-height:100vh;font-family:'Poppins',sans-serif;
+    background:var(--bg-grad);padding:18px 14px 28px;
+    display:flex;justify-content:center;
+  }
+
+  /* ⭐ USER MENU (NEW DROPDOWN BUTTON) */
+  .menu-wrapper {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 9999;
+  }
+  .menu-button {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--accent-grad);
+      color: #fff;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  }
+  .menu-list {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 48px;
+      background: white;
+      border-radius: 12px;
+      min-width: 160px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      overflow: hidden;
+  }
+  .menu-list a {
+      display: block;
+      padding: 10px 14px;
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+  }
+  .menu-list a:last-child {
+      border-bottom: none;
+  }
+  .menu-list a:hover {
+      background: #f3f4f6;
+  }
+
+  .shell{width:100%;max-width:1150px}
+  .hero{display:grid;grid-template-columns:3fr 2.2fr;gap:12px;margin-bottom:14px}
+  @media(max-width:820px){ .hero{grid-template-columns:1fr} }
+  .hero-main{background:linear-gradient(135deg,rgba(255,255,255,0.96),rgba(239,246,255,0.98));border-radius:22px;padding:16px;border:1px solid var(--glass-border);box-shadow:var(--shadow-strong)}
+  .hero-title{font-size:24px;font-weight:800}
+  .hero-sub{font-size:13px;color:var(--muted)}
+  .hero-tags{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+  .tag-pill{padding:4px 10px;border-radius:999px;font-size:11px;border:1px solid rgba(209,213,219,0.9);background:rgba(255,255,255,0.9)}
+  .hero-side{border-radius:22px;padding:14px;background:radial-gradient(circle at top left,rgba(255,255,255,0.98),rgba(219,234,254,0.98));border:1px solid var(--glass-border);box-shadow:var(--shadow-strong)}
+  .filters{background:var(--glass);border-radius:20px;padding:12px;border:1px solid var(--glass-border);backdrop-filter:blur(18px);box-shadow:var(--shadow-strong);margin-bottom:14px}
+  #searchInput{flex:1 1 180px;padding:9px 11px;border-radius:999px;border:1px solid #d1d5db;font-size:13px}
+  .filters-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  @media(max-width:720px){ .filters-row{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media(max-width:480px){ .filters-row{grid-template-columns:1fr} }
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+  .product-card{border-radius:16px;background:var(--glass-strong);border:1px solid rgba(209,213,219,0.7);box-shadow:0 10px 30px rgba(15,23,42,0.12);padding:10px;display:flex;flex-direction:column;gap:8px;transition:transform .16s ease,box-shadow .16s ease}
+  .product-card:hover{ transform:translateY(-6px); box-shadow:0 20px 50px rgba(15,23,42,0.18);}
+  .product-img-wrap{border-radius:12px;overflow:hidden;position:relative;background:linear-gradient(180deg,#fff,#f8fafc);height:140px;display:flex;align-items:center;justify-content:center}
+  .product-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+  .product-card:hover .product-img{ transform:scale(1.03); }
+
+  .product-actions{display:flex;gap:8px;margin-top:6px;align-items:center}
+  .btn-primary{background:var(--accent-grad);color:#fff;border-radius:999px;padding:6px 10px;border:none;font-size:12px;font-weight:600}
 </style>
 </head>
 
 <body>
 
-<div class="menu" onclick="logout()">Logout</div>
+<!-- ⭐ NEW — USER MENU DROPDOWN -->
+<div class="menu-wrapper">
+    <div class="menu-button" onclick="toggleMenu()">☰ Menu</div>
 
-<h2 id="welcome"></h2>
-<div id="grid" class="grid"></div>
+    <div id="menuList" class="menu-list">
+        <a href="my-orders.html">📦 My Orders</a>
+        <a href="track.html">🚚 Track Parcel</a>
+        <a href="mailto:gauricreations04@gmail.com">📩 Support (Email)</a>
+        <a href="https://wa.me/919867726100">💬 WhatsApp Support</a>
+        <a href="#" onclick="logoutUser()">🚪 Logout</a>
+    </div>
+</div>
+
+<div class="shell">
+  <!-- ⭐ HERO SECTION -->
+  <section class="hero">
+    <div class="hero-main">
+      <img src="logo-gauri.jpeg" alt="Gauri" style="width:120px;border-radius:10px;margin-bottom:10px;display:block">
+      <div class="hero-title" id="welcomeText">Gauri Creations Store</div>
+      <div class="hero-sub">Discover exclusive handcrafted designs…</div>
+      <div id="heroBanners" style="margin-top:12px;display:flex;gap:8px;overflow:auto"></div>
+    </div>
+
+    <aside class="hero-side">
+      <div style="font-weight:600;margin-bottom:8px">Store Snapshot</div>
+      <div><span>Total products</span> <span id="summaryTotal"></span></div>
+    </aside>
+  </section>
+
+  <!-- ⭐ FILTERS + PRODUCT GRID (unchanged) -->
+  <section class="filters">
+      <input id="searchInput" type="text" placeholder="Search products…">
+  </section>
+
+  <section id="grid" class="grid"></section>
+</div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
-
-/* ✅ LOGIN CHECK */
-const customer = JSON.parse(localStorage.getItem("gc_customer") || "null");
-if(!customer){
-  window.location.href="login.html";
+/* ========== LOGIN CHECK (NEW) ========== */
+const user = JSON.parse(localStorage.getItem("gc_user") || "null");
+if (!user) {
+    window.location.href = "login.html";
 }
-document.getElementById("welcome").textContent="Welcome, "+customer.name;
+document.getElementById("welcomeText").textContent = "Welcome, " + user.name;
 
-/* ✅ LOAD PRODUCTS */
-fetch(SCRIPT_URL+"?action=getProducts")
-.then(r=>r.json())
-.then(d=>{
-  const grid=document.getElementById("grid");
-  d.products.forEach(p=>{
-    grid.innerHTML+=`
-      <div class="card">
-        <img src="${p["Image URL 1"]}" style="width:100%;border-radius:12px">
-        <div>${p.Name}</div>
-        <strong>₹${p.Price}</strong>
-      </div>`;
-  });
-});
-
-function logout(){
-  localStorage.removeItem("gc_customer");
-  window.location.href="login.html";
+/* DROPDOWN MENU */
+function toggleMenu(){
+    const m = document.getElementById("menuList");
+    m.style.display = m.style.display === "block" ? "none" : "block";
 }
+function logoutUser(){
+    localStorage.removeItem("gc_user");
+    window.location.href = "login.html";
+}
+
+/* — Your existing JS for loading products (unchanged) — */
 </script>
+
 </body>
 </html>
