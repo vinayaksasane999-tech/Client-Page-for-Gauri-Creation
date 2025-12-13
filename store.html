@@ -13,19 +13,15 @@ body{
   background:linear-gradient(135deg,#e3f2ff,#ffe5f3);
   padding:18px;
 }
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
 .menu{
+  position:fixed;
+  top:15px;
+  right:15px;
   background:#2563eb;
   color:#fff;
   padding:10px 16px;
   border-radius:999px;
   cursor:pointer;
-  font-weight:600;
 }
 .grid{
   display:grid;
@@ -36,98 +32,46 @@ body{
   background:#fff;
   padding:10px;
   border-radius:16px;
-  box-shadow:0 6px 18px rgba(0,0,0,.12);
-  cursor:pointer;
-}
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:12px;
-}
-.name{
-  font-size:14px;
-  font-weight:600;
-  margin-top:6px;
-}
-.price{
-  font-weight:700;
-  color:#e11d48;
-}
-.empty{
-  text-align:center;
-  margin-top:40px;
-  font-size:16px;
-  color:#555;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h2 id="welcome">Welcome</h2>
-  <div class="menu" onclick="logout()">Logout</div>
-</div>
+<div class="menu" onclick="logout()">Logout</div>
 
+<h2 id="welcome"></h2>
 <div id="grid" class="grid"></div>
-<div id="empty" class="empty" style="display:none;">
-  No products available right now 🤍
-</div>
 
 <script>
-/* ✅ CORRECT SCRIPT URL */
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
 
-/* ✅ LOGIN CHECK (SINGLE SOURCE OF TRUTH) */
+/* ✅ LOGIN CHECK */
 const customer = JSON.parse(localStorage.getItem("gc_customer") || "null");
-if (!customer || !customer.id) {
-  window.location.href = "login.html";
+if(!customer){
+  window.location.href="login.html";
 }
-document.getElementById("welcome").textContent =
-  "Welcome, " + customer.name;
+document.getElementById("welcome").textContent="Welcome, "+customer.name;
 
-/* ✅ LOAD PRODUCTS SAFELY */
-fetch(SCRIPT_URL + "?action=getProducts")
-  .then(res => res.json())
-  .then(data => {
-    const grid = document.getElementById("grid");
-
-    if (!data.success || !data.products || data.products.length === 0) {
-      document.getElementById("empty").style.display = "block";
-      return;
-    }
-
-    grid.innerHTML = "";
-
-    data.products.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.onclick = () => {
-        window.location.href = "product.html?sku=" + encodeURIComponent(p.SKU);
-      };
-
-      card.innerHTML = `
-        <img src="${p["Image URL 1"] || "logo-gauri.jpeg"}">
-        <div class="name">${p.Name}</div>
-        <div class="price">₹${p.Price}</div>
-      `;
-
-      grid.appendChild(card);
-    });
-  })
-  .catch(err => {
-    console.error(err);
-    document.getElementById("empty").style.display = "block";
+/* ✅ LOAD PRODUCTS */
+fetch(SCRIPT_URL+"?action=getProducts")
+.then(r=>r.json())
+.then(d=>{
+  const grid=document.getElementById("grid");
+  d.products.forEach(p=>{
+    grid.innerHTML+=`
+      <div class="card">
+        <img src="${p["Image URL 1"]}" style="width:100%;border-radius:12px">
+        <div>${p.Name}</div>
+        <strong>₹${p.Price}</strong>
+      </div>`;
   });
+});
 
-/* ✅ LOGOUT */
 function logout(){
   localStorage.removeItem("gc_customer");
-  window.location.href = "login.html";
+  window.location.href="login.html";
 }
 </script>
-
 </body>
 </html>
