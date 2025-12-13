@@ -6,8 +6,6 @@
 <title>Login • Gauri Creations</title>
 
 <style>
-*{ box-sizing:border-box; }
-
 body{
   margin:0;
   min-height:100vh;
@@ -17,7 +15,6 @@ body{
   font-family:Poppins,system-ui;
   background:linear-gradient(135deg,#86e1ff,#ffd4b8);
 }
-
 .card{
   width:100%;
   max-width:380px;
@@ -27,15 +24,6 @@ body{
   box-shadow:0 20px 40px rgba(0,0,0,.25);
   text-align:center;
 }
-
-.logo{
-  width:110px;
-  border-radius:14px;
-  margin-bottom:12px;
-}
-
-h2{margin:6px 0 14px}
-
 input{
   width:100%;
   padding:13px;
@@ -44,10 +32,7 @@ input{
   border:1px solid #ccc;
   font-size:15px;
   display:block;
-  margin-left:auto;
-  margin-right:auto;
 }
-
 button{
   width:100%;
   padding:14px;
@@ -60,83 +45,52 @@ button{
   font-weight:600;
   cursor:pointer;
 }
-
-.small{
-  font-size:13px;
-  margin-top:14px;
-}
-
-.small a{
-  color:#2563eb;
-  font-weight:600;
-  text-decoration:none;
-}
-
-.error{
-  color:#dc2626;
-  font-size:13px;
-  margin-top:10px;
-}
+.error{color:#dc2626;font-size:13px;margin-top:10px}
 </style>
 </head>
 
 <body>
 
 <div class="card">
-  <img src="logo-gauri.jpeg" class="logo">
   <h2>Customer Login</h2>
 
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
-  <button id="loginBtn">Login</button>
+  <button onclick="login()">Login</button>
   <div id="error" class="error"></div>
-
-  <div class="small">
-    New here? <a href="register.html">Create account</a>
-  </div>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
-
-document.getElementById("loginBtn").addEventListener("click", login);
+const SCRIPT_URL = "YOUR_SCRIPT_URL_HERE";
 
 async function login(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const email = email.value.trim();
+  const password = password.value.trim();
   const errorBox = document.getElementById("error");
-  errorBox.textContent = "";
+  errorBox.textContent="";
 
   if(!email || !password){
-    errorBox.textContent = "Please enter email and password";
+    errorBox.textContent="Enter email & password";
     return;
   }
 
-  try{
-    const res = await fetch(SCRIPT_URL + "?action=customerLogin",{
-      method:"POST",
-      body:JSON.stringify({ email, password })
-    });
+  const res = await fetch(SCRIPT_URL+"?action=customerLogin",{
+    method:"POST",
+    body:JSON.stringify({email,password})
+  });
 
-    const data = await res.json();
-
-    if(!data.success){
-      errorBox.textContent = "Invalid email or password";
-      return;
-    }
-
-    // ✅ SINGLE SOURCE OF TRUTH
-    localStorage.setItem("gc_customer", JSON.stringify(data.customer));
-
-    // ✅ REDIRECT
-    window.location.href = "store.html";
-
-  }catch(err){
-    errorBox.textContent = "Network error. Try again.";
+  const data = await res.json();
+  if(!data.success){
+    errorBox.textContent="Invalid login";
+    return;
   }
+
+  // ✅ SINGLE SOURCE OF TRUTH
+  localStorage.setItem("gc_customer", JSON.stringify(data.customer));
+
+  window.location.href = "store.html";
 }
 </script>
-
 </body>
 </html>
