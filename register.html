@@ -6,67 +6,69 @@
 <title>Register • Gauri Creations</title>
 
 <style>
+:root{
+  --accent: linear-gradient(135deg,#2563eb,#ec4899);
+}
+*{box-sizing:border-box}
+
 body{
   margin:0;
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:"Poppins",sans-serif;
+  font-family:Poppins,system-ui;
   background:linear-gradient(135deg,#86e1ff,#ffd4b8);
 }
 
+/* CARD */
 .card{
   width:100%;
   max-width:420px;
   background:#ffffffee;
-  padding:28px;
+  padding:26px;
   border-radius:22px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
   text-align:center;
 }
 
+/* LOGO */
 .logo{
   width:90px;
   border-radius:14px;
   margin-bottom:10px;
 }
 
-h2{margin:10px 0 5px}
-p{font-size:13px;color:#666;margin-bottom:18px}
-
+/* INPUTS */
 input,textarea{
   width:100%;
   padding:14px;
-  margin-bottom:12px;
+  margin-top:14px;
   border-radius:12px;
-  border:1px solid #bbb;
+  border:1px solid #ccc;
   font-size:15px;
 }
 
-textarea{resize:none}
-
+/* BUTTON */
 button{
   width:100%;
+  margin-top:18px;
   padding:14px;
   border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,#2563eb,#ec4899);
-  color:white;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff;
   font-size:16px;
   font-weight:600;
   cursor:pointer;
 }
 
-.link{
+/* LINKS */
+.small{
   margin-top:14px;
   font-size:13px;
 }
-.link a{
-  color:#2563eb;
-  text-decoration:none;
-  font-weight:600;
-}
+a{color:#2563eb;text-decoration:none;font-weight:600}
 </style>
 </head>
 
@@ -74,46 +76,50 @@ button{
 
 <div class="card">
   <img src="logo-gauri.jpeg" class="logo">
+
   <h2>Create Account</h2>
-  <p>Join Gauri Creations</p>
+  <p style="color:#555;font-size:14px">Join Gauri Creations</p>
 
   <input id="name" placeholder="Full Name">
-  <input id="email" type="email" placeholder="Email">
+  <input id="email" placeholder="Email">
   <input id="phone" placeholder="Phone Number">
-  <textarea id="address" rows="2" placeholder="Delivery Address"></textarea>
+  <textarea id="address" rows="3" placeholder="Address"></textarea>
   <input id="password" type="password" placeholder="Password">
 
-  <button onclick="register()">Register</button>
+  <button onclick="register()">Create Account</button>
 
-  <div class="link">
-    Already registered? <a href="login.html">Login</a>
+  <div class="small">
+    Already have an account? <a href="login.html">Login</a>
   </div>
 </div>
 
 <script>
-const SCRIPT_URL="YOUR_SCRIPT_URL";
+const API = "YOUR_SCRIPT_URL";
 
-async function register(){
+function register(){
   const body={
-    name: name.value.trim(),
-    email: email.value.trim(),
-    phone: phone.value.trim(),
-    address: address.value.trim(),
-    password: password.value.trim()
+    name:name.value.trim(),
+    email:email.value.trim(),
+    phone:phone.value.trim(),
+    address:address.value.trim(),
+    password:password.value.trim()
   };
 
-  if(Object.values(body).some(v=>!v)){alert("Fill all fields");return;}
+  if(Object.values(body).some(v=>!v)){
+    alert("Fill all fields");
+    return;
+  }
 
-  const res=await fetch(SCRIPT_URL+"?action=customerSignup",{
+  fetch(API+"?action=customerSignup",{
     method:"POST",
     body:JSON.stringify(body)
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(!d.success) return alert("Signup failed");
+    alert("Account created successfully ❤️");
+    window.location.href="login.html";
   });
-  const data=await res.json();
-
-  if(!data.success){alert("Signup failed");return;}
-
-  alert("Account created successfully ❤️");
-  window.location.href="login.html";
 }
 </script>
 
