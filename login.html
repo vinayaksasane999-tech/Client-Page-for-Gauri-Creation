@@ -6,6 +6,8 @@
 <title>Login • Gauri Creations</title>
 
 <style>
+*{ box-sizing:border-box; }
+
 body{
   margin:0;
   min-height:100vh;
@@ -15,6 +17,7 @@ body{
   font-family:Poppins,system-ui;
   background:linear-gradient(135deg,#86e1ff,#ffd4b8);
 }
+
 .card{
   width:100%;
   max-width:380px;
@@ -24,11 +27,15 @@ body{
   box-shadow:0 20px 40px rgba(0,0,0,.25);
   text-align:center;
 }
+
 .logo{
   width:110px;
   border-radius:14px;
   margin-bottom:12px;
 }
+
+h2{margin:6px 0 14px}
+
 input{
   width:100%;
   padding:13px;
@@ -36,7 +43,11 @@ input{
   border-radius:12px;
   border:1px solid #ccc;
   font-size:15px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
+
 button{
   width:100%;
   padding:14px;
@@ -49,19 +60,22 @@ button{
   font-weight:600;
   cursor:pointer;
 }
-.error{
-  color:#dc2626;
-  font-size:13px;
-  margin-top:10px;
-}
+
 .small{
   font-size:13px;
   margin-top:14px;
 }
+
 .small a{
   color:#2563eb;
   font-weight:600;
   text-decoration:none;
+}
+
+.error{
+  color:#dc2626;
+  font-size:13px;
+  margin-top:10px;
 }
 </style>
 </head>
@@ -75,7 +89,7 @@ button{
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
-  <button onclick="login()">Login</button>
+  <button id="loginBtn">Login</button>
   <div id="error" class="error"></div>
 
   <div class="small">
@@ -84,12 +98,13 @@ button{
 </div>
 
 <script>
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+
+document.getElementById("loginBtn").addEventListener("click", login);
 
 async function login(){
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
   const errorBox = document.getElementById("error");
   errorBox.textContent = "";
 
@@ -111,19 +126,16 @@ async function login(){
       return;
     }
 
-    // ✅ SAVE SESSION (FIXED KEY)
-    localStorage.setItem("gc_user", JSON.stringify(data.customer));
+    // ✅ SINGLE SOURCE OF TRUTH
+    localStorage.setItem("gc_customer", JSON.stringify(data.customer));
 
     // ✅ REDIRECT
     window.location.href = "store.html";
 
-  }catch(e){
+  }catch(err){
     errorBox.textContent = "Network error. Try again.";
   }
 }
-
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
 </script>
 
 </body>
