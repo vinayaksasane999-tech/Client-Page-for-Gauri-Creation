@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin • Manage Reviews | Gauri Creations</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins,system-ui;
+  background:linear-gradient(135deg,#e3f2ff,#ffe5f3);
+  padding:20px;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+  background:#ffffffee;
+  padding:22px;
+  border-radius:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+h2{margin-bottom:15px}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+  vertical-align:top;
+}
+th{
+  background:#f1f5f9;
+}
+
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  background:#fde68a;
+}
+
+.btn{
+  padding:6px 12px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:13px;
+}
+
+.btn-delete{
+  background:#ef4444;
+  color:#fff;
+}
+
+.btn-delete:hover{
+  opacity:0.9;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>⭐ Admin – Manage Reviews & Ratings</h2>
+
+  <table id="reviewsTable">
+    <thead>
+      <tr>
+        <th>Review ID</th>
+        <th>Product SKU</th>
+        <th>Customer</th>
+        <th>Rating</th>
+        <th>Comment</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+
+/* Load all reviews */
+async function loadReviews(){
+  const res = await fetch(SCRIPT_URL + "?action=getReviews&all=1");
+  const data = await res.json();
+
+  if(!data.success){
+    alert("Failed to load reviews");
+    return;
+  }
+
+  const tbody = document.querySelector("#reviewsTable tbody");
+  tbody.innerHTML = "";
+
+  data.reviews.reverse().forEach(r=>{
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${r["Review ID"]}</td>
+      <td>${r["Product SKU"]}</td>
+      <td>${r["Customer ID"] || "-"}</td>
+      <td><span class="badge">★ ${r["Rating"]}</span></td>
+      <td>${r["Comment"] || "-"}</td>
+      <td>
+        <button class="btn btn-delete"
+          onclick="deleteReview('${r["Review ID"]}','${r["Product SKU"]}')">
+          Delete
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+/* Delete review + recalc rating */
+async function deleteReview(reviewId, sku){
+  if(!confirm("Delete this review permanently?")) return;
+
+  await fetch(SCRIPT_URL + "?action=deleteReview",{
+    method:"POST",
+    body:JSON.stringify({ reviewId, sku })
+  });
+
+  alert("Review deleted ✔ Rating updated");
+  loadReviews();
+}
+
+loadReviews();
+</script>
+
+</body>
+</html>

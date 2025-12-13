@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin • Manage Orders | Gauri Creations</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins,system-ui;
+  background:linear-gradient(135deg,#e3f2ff,#ffe5f3);
+  padding:20px;
+}
+.container{
+  max-width:1200px;
+  margin:auto;
+  background:#ffffffee;
+  padding:20px;
+  border-radius:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+h2{margin-bottom:15px}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+}
+th{background:#f1f5f9}
+select,input{
+  padding:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:13px;
+}
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+.paid{background:#22c55e;color:#fff}
+.pending{background:#f59e0b;color:#fff}
+
+/* toast */
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#22c55e;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>📦 Admin – Manage Orders</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Product</th>
+        <th>Total ₹</th>
+        <th>Payment</th>
+        <th>Status</th>
+        <th>AWB</th>
+        <th>Delivery Date</th>
+      </tr>
+    </thead>
+    <tbody id="ordersBody"></tbody>
+  </table>
+</div>
+
+<div id="toast" class="toast">Saved ✔</div>
+
+<script>
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+
+const STATUS_OPTIONS = [
+  "Order Received",
+  "Payment Verified",
+  "Packing",
+  "Shipped",
+  "Out for Delivery",
+  "Delivered"
+];
+
+function showToast(){
+  const t = document.getElementById("toast");
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1800);
+}
+
+async function loadOrders(){
+  const res = await fetch(SCRIPT_URL + "?action=listOrders");
+  const data = await res.json();
+  if(!data.success) return alert("Failed to load orders");
+
+  const tbody = document.getElementById("ordersBody");
+  tbody.innerHTML="";
+
+  data.orders.reverse().forEach(o=>{
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${o["Order ID"]}</td>
+      <td>${o["Customer Name"]}<br><small>${o["Phone"]}</small></td>
+      <td>${o["Product Name"]} × ${o["Qty"]}</td>
+      <td>${o["Total"]}</td>
+
+      <td>
+        <span class="badge ${o["Payment Status"]==="PAID"?"paid":"pending"}">
+          ${o["Payment Status"]}
+        </span><br>
+        <select onchange="updatePayment('${o["Order ID"]}',this.value)">
+          <option value="Pending" ${o["Payment Status"]==="Pending"?"selected":""}>Pending</option>
+          <option value="PAID" ${o["Payment Status"]==="PAID"?"selected":""}>PAID</option>
+        </select>
+      </td>
+
+      <td>
+        <select onchange="updateStatus('${o["Order ID"]}',this.value,'${o["Payment Status"]}')">
+          ${STATUS_OPTIONS.map(s=>`
+            <option ${o["Status"]===s?"selected":""}>${s}</option>
+          `).join("")}
+        </select>
+      </td>
+
+      <td>
+        <input value="${o["AWB"]||""}"
+        onchange="saveField('${o["Order ID"]}','awb',this.value)">
+      </td>
+
+      <td>
+        <input type="date"
+        value="${o["Expected Delivery Date"]||""}"
+        onchange="saveField('${o["Order ID"]}','expectedDelivery',this.value)">
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function saveField(orderId, field, value){
+  const payload = { orderId };
+  payload[field] = value;
+
+  await fetch(SCRIPT_URL + "?action=updateOrderStatus",{
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
+  showToast();
+}
+
+async function updatePayment(orderId, value){
+  await saveField(orderId,"paymentStatus",value);
+
+  // auto-force status safety
+  if(value !== "PAID"){
+    await saveField(orderId,"status","Order Received");
+  }
+}
+
+async function updateStatus(orderId, status, payment){
+  if(payment !== "PAID"){
+    alert("Payment not verified yet");
+    return loadOrders();
+  }
+  await saveField(orderId,"status",status);
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>

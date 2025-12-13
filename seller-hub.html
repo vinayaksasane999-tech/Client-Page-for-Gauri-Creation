@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Hub • Gauri Creations</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins,system-ui;
+  background:linear-gradient(135deg,#e3f2ff,#ffe5f3);
+  padding:20px;
+}
+.container{
+  max-width:1200px;
+  margin:auto;
+  background:#ffffffee;
+  padding:22px;
+  border-radius:22px;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+h2{margin-bottom:15px}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  text-align:left;
+}
+th{
+  background:#f1f5f9;
+}
+select,input{
+  padding:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:13px;
+}
+.btn{
+  padding:6px 14px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#2563eb,#ec4899);
+  color:#fff;
+}
+.btn-support{
+  background:#22c55e;
+  color:#fff;
+}
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+.shipped{background:#2563eb;color:#fff}
+.packed{background:#f59e0b;color:#fff}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🚚 Seller Hub – Shipping & Fulfillment</h2>
+
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>AWB</th>
+        <th>Delivery Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxlp4ehND6OHfGY9ruPptTs4euh3U-v3y6IA90EfmwjuiFZD4BnoHDjifKAPG9B1T7/exec";
+
+const STATUS_FLOW = [
+  "Packing",
+  "Shipped",
+  "Out for Delivery",
+  "Delivered"
+];
+
+async function loadOrders(){
+  const res = await fetch(SCRIPT_URL + "?action=listOrders");
+  const data = await res.json();
+  if(!data.success) return alert("Failed to load orders");
+
+  const tbody = document.querySelector("#ordersTable tbody");
+  tbody.innerHTML = "";
+
+  data.orders
+    .filter(o => o["Payment Status"] === "PAID")
+    .reverse()
+    .forEach(o=>{
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${o["Order ID"]}</td>
+        <td>${o["Customer Name"]}<br><small>${o["Phone"]}</small></td>
+        <td style="max-width:200px">${o["Address"]||"-"}</td>
+        <td>
+          <select onchange="updateOrder('${o["Order ID"]}','status',this.value)">
+            ${STATUS_FLOW.map(s=>`
+              <option ${o["Status"]===s?"selected":""}>${s}</option>
+            `).join("")}
+          </select>
+        </td>
+        <td>
+          <input placeholder="AWB No"
+            value="${o["AWB"]||""}"
+            onchange="updateOrder('${o["Order ID"]}','awb',this.value)">
+        </td>
+        <td>
+          <input type="date"
+            value="${o["Expected Delivery Date"]||""}"
+            onchange="updateOrder('${o["Order ID"]}','expectedDelivery',this.value)">
+        </td>
+        <td>
+          <button class="btn btn-primary" onclick="alert('Updated ✔')">Save</button>
+          <br><br>
+          <button class="btn btn-support" onclick="support('${o["Phone"]}')">Support</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+}
+
+async function updateOrder(orderId, field, value){
+  const payload = { orderId };
+  payload[field] = value;
+
+  await fetch(SCRIPT_URL + "?action=updateOrderStatus",{
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
+}
+
+function support(phone){
+  const msg = "Hello Gauri Creations, I need help regarding my order.";
+  window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`);
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>
