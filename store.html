@@ -103,7 +103,8 @@
     padding:10px;
     display:flex;
     flex-direction:column;
-    gap:8px
+    gap:8px;
+    position:relative;
   }
 
   .product-img-wrap{
@@ -113,13 +114,27 @@
     height:140px;
     display:flex;
     align-items:center;
-    justify-content:center
+    justify-content:center;
+    position:relative;
   }
 
   .product-img{
     width:100%;
     height:100%;
     object-fit:cover
+  }
+
+  /* ❤️ Wishlist heart (ADDED) */
+  .wish-btn{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:#fff;
+    border-radius:50%;
+    padding:6px;
+    cursor:pointer;
+    font-size:14px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.18);
   }
 
   .product-actions{
@@ -148,6 +163,10 @@
   <div id="menuList" class="menu-list">
     <a href="my-orders.html">📦 My Orders</a>
     <a href="track.html">🚚 Track Parcel</a>
+
+    <!-- ❤️ Wishlist link (ADDED) -->
+    <a href="wishlist.html">❤️ Wishlist</a>
+
     <a href="mailto:gauricreations04@gmail.com">📩 Support (Email)</a>
     <a href="https://wa.me/917745092723">💬 WhatsApp Support</a>
     <a href="#" onclick="logoutUser()">🚪 Logout</a>
@@ -192,6 +211,22 @@ function logoutUser(){
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
 
+/* ❤️ Wishlist helpers (ADDED) */
+function getWishlist(){
+  return JSON.parse(localStorage.getItem("gc_wishlist") || "[]");
+}
+function saveWishlist(list){
+  localStorage.setItem("gc_wishlist", JSON.stringify(list));
+}
+function toggleWishlist(product){
+  const list = getWishlist();
+  const idx = list.findIndex(i => i.SKU === product.SKU);
+  if(idx >= 0) list.splice(idx,1);
+  else list.push(product);
+  saveWishlist(list);
+  alert("Wishlist updated ❤️");
+}
+
 async function loadProducts(){
   const res = await fetch(SCRIPT_URL+"?action=getProducts");
   const data = await res.json();
@@ -207,6 +242,7 @@ async function loadProducts(){
     card.innerHTML=`
       <div class="product-img-wrap">
         <img src="${p["Image URL 1"]}" class="product-img">
+        <div class="wish-btn" onclick='toggleWishlist(${JSON.stringify(p)})'>❤️</div>
       </div>
       <strong>${p.Name}</strong>
       <div>₹${p.Price}</div>
