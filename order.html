@@ -74,50 +74,29 @@
 
 </div>
 
-// DOM references (MISSING)
-const qtyEl = document.getElementById("qty");
-const sumPrice = document.getElementById("sumPrice");
-const sumDelivery = document.getElementById("sumDelivery");
-const sumTotal = document.getElementById("sumTotal");
-const deliveryDate = document.getElementById("deliveryDate");
-
-const custName = document.getElementById("custName");
-const custPhone = document.getElementById("custPhone");
-const custPincode = document.getElementById("custPincode");
-const custAddress = document.getElementById("custAddress");
-const custNotes = document.getElementById("custNotes");
-
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
 
+/* ===== DOM ===== */
+const qtyEl = document.getElementById("qty");
+const sumPriceEl = document.getElementById("sumPrice");
+const sumDeliveryEl = document.getElementById("sumDelivery");
+const sumTotalEl = document.getElementById("sumTotal");
+const deliveryDateEl = document.getElementById("deliveryDate");
+
+const custNameEl = document.getElementById("custName");
+const custPhoneEl = document.getElementById("custPhone");
+const custPincodeEl = document.getElementById("custPincode");
+const custAddressEl = document.getElementById("custAddress");
+const custNotesEl = document.getElementById("custNotes");
+
+/* ===== STATE ===== */
 let qty = 1;
 let prodName = "";
 let prodPrice = 0;
-let prodImg = "";
-let sku = "";
 let weightPerItem = 0;
 
-/* LOAD PRODUCT */
-const params = new URLSearchParams(window.location.search);
-sku = params.get("sku") || "";
-
-fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
-  .then(r => r.json())
-  .then(d => {
-    if (!d.success) return;
-    const p = d.product;
-    prodName = p["Name"];
-    prodPrice = Number(p["Price"]);
-    prodImg = p["Image URL 1"];
-    weightPerItem = Number(p["Weight"] || 0);
-
-    prodName && (document.getElementById("prodName").textContent = prodName);
-    document.getElementById("prodPrice").textContent = "₹" + prodPrice;
-    document.getElementById("prodImg").src = prodImg;
-    document.getElementById("prodWeight").textContent = "Weight: " + weightPerItem + " g";
-    updateSummary();
-  });
-
+/* ===== HELPERS ===== */
 function shippingByWeight(g) {
   if (g <= 250) return 49;
   if (g <= 500) return 59;
@@ -126,19 +105,24 @@ function shippingByWeight(g) {
 }
 
 function updateSummary() {
+  if (!prodPrice) return; // product not loaded yet
+
   const subtotal = prodPrice * qty;
-  const pin = custPincode.value.trim();
-  const delivery = /^\d{6}$/.test(pin) ? shippingByWeight(weightPerItem * qty) : 0;
+  const pin = custPincodeEl.value.trim();
+  const delivery = /^\d{6}$/.test(pin)
+    ? shippingByWeight(weightPerItem * qty)
+    : 0;
+
   const total = subtotal + delivery;
 
   qtyEl.textContent = qty;
-  sumPrice.textContent = subtotal;
-  sumDelivery.textContent = delivery;
-  sumTotal.textContent = total;
+  sumPriceEl.textContent = subtotal;
+  sumDeliveryEl.textContent = delivery;
+  sumTotalEl.textContent = total;
 
   const d = new Date();
   d.setDate(d.getDate() + 7);
-  deliveryDate.textContent = d.toDateString();
+  deliveryDateEl.textContent = d.toDateString();
 }
 
 function updateQty(v) {
@@ -146,11 +130,38 @@ function updateQty(v) {
   updateSummary();
 }
 
-custPincode.addEventListener("input", updateSummary);
+/* ===== LOAD PRODUCT ===== */
+const params = new URLSearchParams(window.location.search);
+const sku = params.get("sku");
 
-/* SUBMIT ORDER */
+fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
+  .then(r => r.json())
+  .then(d => {
+    if (!d.success) return;
+
+    const p = d.product;
+    prodName = p["Name"];
+    prodPrice = Number(p["Price"]);
+    weightPerItem = Number(p["Weight"] || 0);
+
+    document.getElementById("prodName").textContent = prodName;
+    document.getElementById("prodPrice").textContent = "₹" + prodPrice;
+    document.getElementById("prodImg").src = p["Image URL 1"];
+    document.getElementById("prodWeight").textContent = `Weight: ${weightPerItem} g`;
+
+    updateSummary(); // ✅ NOW it runs correctly
+  });
+
+custPincodeEl.addEventListener("input", updateSummary);
+
+/* ===== SUBMIT ORDER ===== */
 async function submitOrder() {
-  if (!custName.value || !custPhone.value || !custAddress.value || !/^\d{6}$/.test(custPincode.value)) {
+  if (
+    !custNameEl.value ||
+    !custPhoneEl.value ||
+    !custAddressEl.value ||
+    !/^\d{6}$/.test(custPincodeEl.value)
+  ) {
     alert("Please fill all required fields");
     return;
   }
@@ -158,37 +169,30 @@ async function submitOrder() {
   const orderId = "GC" + Date.now();
   const subtotal = prodPrice * qty;
   const delivery = shippingByWeight(weightPerItem * qty);
-  const total = subtotal + delivery;
 
-  const orderData = {
-    action: "createOrder",
-    orderId,
-    product: prodName,
-    qty,
-    price: prodPrice,
-    subtotal,
-    delivery,
-    total,
-    name: custName.value,
-    phone: custPhone.value,
-    address: custAddress.value,
-    pincode: custPincode.value,
-    notes: custNotes.value,
-    status: "PENDING"
-  };
+  await fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "createOrder",
+      orderId,
+      product: prodName,
+      qty,
+      price: prodPrice,
+      subtotal,
+      delivery,
+      total: subtotal + delivery,
+      name: custNameEl.value,
+      phone: custPhoneEl.value,
+      address: custAddressEl.value,
+      pincode: custPincodeEl.value,
+      notes: custNotesEl.value,
+      status: "PENDING"
+    })
+  });
 
-  try {
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderData)
-    });
-
-    window.location.href =
-      `payment.html?orderId=${orderId}&product=${encodeURIComponent(prodName)}&price=${subtotal}&qty=${qty}&delivery=${delivery}`;
-  } catch {
-    alert("Order failed. Try again.");
-  }
+  window.location.href =
+    `payment.html?orderId=${orderId}&product=${encodeURIComponent(prodName)}&price=${subtotal}&qty=${qty}&delivery=${delivery}`;
 }
 </script>
 
