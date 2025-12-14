@@ -132,7 +132,7 @@ fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
   prodPrice = Number(p["Price"]);
   weightPerItem = Number(p["Weight"] || 0);
 
-  document.getElementById("prodName").textContent = prodName;
+  prodName && (document.getElementById("prodName").textContent = prodName);
   document.getElementById("prodPrice").textContent = "₹" + prodPrice;
   document.getElementById("prodImg").src = p["Image URL 1"];
   document.getElementById("prodWeight").textContent = `Weight: ${weightPerItem} g`;
@@ -142,7 +142,7 @@ fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
 
 custPincodeEl.addEventListener("input", updateSummary);
 
-/* SUBMIT ORDER — FIXED */
+/* SUBMIT ORDER — CORS-SAFE */
 async function submitOrder() {
   try {
     const name = custNameEl.value.trim();
@@ -161,7 +161,6 @@ async function submitOrder() {
 
     const res = await fetch(SCRIPT_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         action: "createOrder",
         product: prodName,
