@@ -52,6 +52,28 @@ button{
   cursor:pointer;
 }
 
+.guest-btn{
+  background:#fff;
+  color:#333;
+  border:1px solid #ccc;
+  margin-top:10px;
+}
+
+.links{
+  margin-top:14px;
+  font-size:14px;
+}
+
+.links a{
+  color:#2563eb;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.links a:hover{
+  text-decoration:underline;
+}
+
 .error{
   color:#dc2626;
   font-size:13px;
@@ -69,6 +91,17 @@ button{
   <input id="password" type="password" placeholder="Password">
 
   <button type="button" onclick="login()">Login</button>
+
+  <!-- ✅ Guest Mode -->
+  <button type="button" class="guest-btn" onclick="continueAsGuest()">
+    Continue as Guest
+  </button>
+
+  <!-- ✅ Register Link -->
+  <div class="links">
+    New here? <a href="register.html">Create an account</a>
+  </div>
+
   <div id="error" class="error"></div>
 </div>
 
@@ -76,8 +109,13 @@ button{
 /* ✅ UPDATED WEB APP URL */
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
+
 /* ✅ AUTO-REDIRECTS IF ALREADY LOGGED IN */
 if (localStorage.getItem("gc_customer")) {
+  window.location.href = "store.html";
+}
+
+function continueAsGuest(){
   window.location.href = "store.html";
 }
   
@@ -108,10 +146,8 @@ async function login(){
       return;
     }
 
-    // ✅ Save customer session
     localStorage.setItem("gc_customer", JSON.stringify(data.customer));
 
-    // ✅ Redirect to store
     window.location.href = "store.html";
 
   }catch(err){
