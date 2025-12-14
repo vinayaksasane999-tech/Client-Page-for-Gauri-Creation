@@ -239,6 +239,19 @@ fetch(`${SCRIPT_URL}?action=getOrders`)
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("confirmButton");
+  if (!btn) {
+    console.error("confirmButton not found");
+    return;
+  }
+
+  btn.addEventListener("click", () => {
+    startPaymentCheck();
+  });
+});
+</script>
 
 </body>
 </html>
