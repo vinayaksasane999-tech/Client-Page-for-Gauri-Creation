@@ -5,20 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Order • Gauri Creations</title>
 
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="favicon.ico">
 
 <style>
-body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradient(135deg, #86e1ff, #ffd4b8); padding: 20px; color: #222; }
-.container { max-width: 520px; margin: auto; background: #ffffffd8; padding: 25px; border-radius: 22px; box-shadow: 0 6px 18px rgba(0,0,0,0.18); text-align: center; }
-.logo { width: 130px; display: block; margin: 0 auto 20px; border-radius: 12px; }
-.product-box { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; text-align: left; }
-.product-img { width: 95px; height: 95px; border-radius: 15px; object-fit: cover; }
-.input-field { width: 92%; margin: 12px auto 0; display: block; padding: 13px; border-radius: 12px; border: 1px solid #bbb; font-size: 15px; }
-.summary { background: #fff; padding: 14px; border-radius: 15px; border: 1px solid #ddd; width: 92%; margin: 18px auto 0; text-align: left; }
-.qty-row { width: 92%; margin: 18px auto 14px; display: flex; justify-content: space-between; align-items: center; }
-.qty-btn { padding: 8px 16px; border-radius: 10px; background: #007aff; color: white; border: none; font-size: 18px; font-weight: 600; cursor:pointer; }
-.btn-proceed { width: 92%; padding: 14px; background: #007aff; color: white; border-radius: 14px; font-size: 17px; font-weight: 600; margin: 18px auto 0; border: none; cursor:pointer; }
+body{
+  margin:0;
+  font-family:Poppins,system-ui;
+  background:linear-gradient(135deg,#86e1ff,#ffd4b8);
+  padding:20px;
+}
+.container{
+  max-width:520px;
+  margin:auto;
+  background:#ffffffee;
+  padding:25px;
+  border-radius:22px;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  text-align:center;
+}
+.logo{
+  width:130px;
+  margin:0 auto 20px;
+  border-radius:12px;
+}
+.product-box{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:18px;
+  text-align:left;
+}
+.product-img{
+  width:95px;
+  height:95px;
+  border-radius:15px;
+  object-fit:cover;
+}
+.qty-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:16px auto;
+  width:92%;
+}
+.qty-btn{
+  padding:8px 16px;
+  border-radius:10px;
+  background:#007aff;
+  color:white;
+  border:none;
+  font-size:18px;
+  font-weight:600;
+}
+.input-field{
+  width:92%;
+  margin:12px auto 0;
+  display:block;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid #bbb;
+  font-size:15px;
+}
+.summary{
+  background:#fff;
+  border-radius:14px;
+  border:1px solid #ddd;
+  padding:14px;
+  margin:18px auto 0;
+  width:92%;
+  text-align:left;
+}
+.btn-proceed{
+  width:92%;
+  padding:14px;
+  background:#007aff;
+  color:white;
+  border-radius:14px;
+  font-size:17px;
+  font-weight:600;
+  margin-top:18px;
+  border:none;
+}
 </style>
 </head>
 
@@ -33,16 +101,16 @@ body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradien
 <div class="product-box">
   <img id="prodImg" class="product-img">
   <div>
-    <div id="prodName" style="font-size:18px;font-weight:600;">Product</div>
-    <div id="prodPrice" style="font-weight:600;color:#c62828;">₹0</div>
-    <div id="prodWeight" style="font-size:13px;color:#666;">Weight: - g</div>
+    <div id="prodName" style="font-size:18px;font-weight:600;">Loading…</div>
+    <div id="prodPrice" style="color:#c62828;font-weight:600;">₹0</div>
+    <div id="prodWeight" style="font-size:13px;color:#666;">Weight: -</div>
   </div>
 </div>
 
 <div class="qty-row">
-  <button type="button" class="qty-btn" onclick="updateQty(-1)">−</button>
+  <button id="minusBtn" class="qty-btn">−</button>
   <div><strong>Quantity:</strong> <span id="qty">1</span></div>
-  <button type="button" class="qty-btn" onclick="updateQty(1)">+</button>
+  <button id="plusBtn" class="qty-btn">+</button>
 </div>
 
 <input id="custName" class="input-field" placeholder="Your Full Name">
@@ -53,38 +121,40 @@ body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradien
 
 <div class="summary">
   <div><strong>Price:</strong> ₹<span id="sumPrice">0</span></div>
-  <div><strong>Delivery Charges:</strong> ₹<span id="sumDelivery">0</span></div>
-  <div><strong>Total Amount:</strong> ₹<span id="sumTotal">0</span></div>
+  <div><strong>Delivery:</strong> ₹<span id="sumDelivery">0</span></div>
+  <div><strong>Total:</strong> ₹<span id="sumTotal">0</span></div>
   <div><strong>Expected Delivery:</strong> <span id="deliveryDate">-</span></div>
 </div>
 
-<button type="button" class="btn-proceed" onclick="submitOrder()">Proceed to Payment</button>
+<button id="proceedBtn" class="btn-proceed">Proceed to Payment</button>
 
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
+/* ================= CONFIG ================= */
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
 
-/* DOM */
+/* ================= STATE ================= */
+let qty = 1;
+let price = 0;
+let weight = 0;
+let productName = "";
+
+/* ================= DOM ================= */
 const qtyEl = document.getElementById("qty");
 const sumPriceEl = document.getElementById("sumPrice");
 const sumDeliveryEl = document.getElementById("sumDelivery");
 const sumTotalEl = document.getElementById("sumTotal");
 const deliveryDateEl = document.getElementById("deliveryDate");
 
-const custNameEl = document.getElementById("custName");
-const custPhoneEl = document.getElementById("custPhone");
-const custPincodeEl = document.getElementById("custPincode");
-const custAddressEl = document.getElementById("custAddress");
-const custNotesEl = document.getElementById("custNotes");
+const pincodeEl = document.getElementById("custPincode");
+const nameEl = document.getElementById("custName");
+const phoneEl = document.getElementById("custPhone");
+const addressEl = document.getElementById("custAddress");
+const notesEl = document.getElementById("custNotes");
 
-/* STATE */
-let qty = 1;
-let prodPrice = 0;
-let prodName = "";
-let weightPerItem = 0;
-
-/* SHIPPING */
+/* ================= SHIPPING ================= */
 function shippingByWeight(g){
   if(g<=250) return 49;
   if(g<=500) return 59;
@@ -92,12 +162,12 @@ function shippingByWeight(g){
   return 79 + Math.ceil((g-1000)/500)*30;
 }
 
-/* SUMMARY */
+/* ================= SUMMARY ================= */
 function updateSummary(){
-  if(!prodPrice) return;
-  const subtotal = prodPrice * qty;
-  const pin = custPincodeEl.value.trim();
-  const delivery = /^\d{6}$/.test(pin) ? shippingByWeight(weightPerItem * qty) : 0;
+  if(!price) return;
+  const subtotal = price * qty;
+  const pin = pincodeEl.value.trim();
+  const delivery = /^\d{6}$/.test(pin) ? shippingByWeight(weight*qty) : 0;
   const total = subtotal + delivery;
 
   qtyEl.textContent = qty;
@@ -110,46 +180,51 @@ function updateSummary(){
   deliveryDateEl.textContent = d.toDateString();
 }
 
-/* QTY */
-function updateQty(v){
-  qty = Math.max(1, qty+v);
-  updateSummary();
-}
-window.updateQty = updateQty;
-
-/* LOAD PRODUCT */
-const sku = new URLSearchParams(location.search).get("sku") || "";
-
-fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
-.then(r=>r.json())
-.then(d=>{
-  if(!d.success) return alert("Product not found");
-  const p = d.product;
-  prodName = p["Name"];
-  prodPrice = Number(p["Price"]);
-  weightPerItem = Number(p["Weight"]||0);
-
-  prodName && (document.getElementById("prodName").textContent = prodName);
-  document.getElementById("prodPrice").textContent = "₹"+prodPrice;
-  document.getElementById("prodImg").src = p["Image URL 1"];
-  document.getElementById("prodWeight").textContent = `Weight: ${weightPerItem} g`;
-
-  updateSummary();
+/* ================= EVENTS ================= */
+document.getElementById("plusBtn").addEventListener("click",()=>{
+  qty++; updateSummary();
 });
+document.getElementById("minusBtn").addEventListener("click",()=>{
+  qty = Math.max(1,qty-1); updateSummary();
+});
+pincodeEl.addEventListener("input",updateSummary);
 
-/* PINCODE */
-custPincodeEl.addEventListener("input", updateSummary);
+/* ================= LOAD PRODUCT ================= */
+(async ()=>{
+  try{
+    const sku = new URLSearchParams(location.search).get("sku");
+    if(!sku) throw "No SKU";
 
-/* SUBMIT */
-async function submitOrder(){
-  if(!custNameEl.value || !custPhoneEl.value || !custAddressEl.value || !/^\d{6}$/.test(custPincodeEl.value)){
+    const r = await fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`);
+    const d = await r.json();
+    if(!d.success) throw "Invalid product";
+
+    const p = d.product;
+    productName = p["Name"];
+    price = Number(p["Price"]);
+    weight = Number(p["Weight"]||0);
+
+    prodName.textContent = productName;
+    prodPrice.textContent = "₹"+price;
+    prodImg.src = p["Image URL 1"];
+    prodWeight.textContent = `Weight: ${weight} g`;
+
+    updateSummary();
+  }catch{
+    alert("Unable to load product. Please reopen the link.");
+  }
+})();
+
+/* ================= SUBMIT ================= */
+document.getElementById("proceedBtn").addEventListener("click",async ()=>{
+  if(!nameEl.value || !phoneEl.value || !addressEl.value || !/^\d{6}$/.test(pincodeEl.value)){
     alert("Please fill all required fields");
     return;
   }
 
-  const subtotal = prodPrice * qty;
-  const delivery = shippingByWeight(weightPerItem * qty);
   const orderId = "GC"+Date.now();
+  const subtotal = price * qty;
+  const delivery = shippingByWeight(weight*qty);
 
   await fetch(SCRIPT_URL,{
     method:"POST",
@@ -157,25 +232,24 @@ async function submitOrder(){
     body:JSON.stringify({
       action:"createOrder",
       orderId,
-      product:prodName,
+      product:productName,
       qty,
-      price:prodPrice,
+      price,
       subtotal,
       delivery,
       total:subtotal+delivery,
-      name:custNameEl.value,
-      phone:custPhoneEl.value,
-      address:custAddressEl.value,
-      pincode:custPincodeEl.value,
-      notes:custNotesEl.value,
+      name:nameEl.value,
+      phone:phoneEl.value,
+      address:addressEl.value,
+      pincode:pincodeEl.value,
+      notes:notesEl.value,
       status:"PENDING"
     })
   });
 
   location.href =
-    `payment.html?orderId=${orderId}&product=${encodeURIComponent(prodName)}&price=${subtotal}&qty=${qty}&delivery=${delivery}`;
-}
-window.submitOrder = submitOrder;
+   `payment.html?orderId=${orderId}&product=${encodeURIComponent(productName)}&price=${subtotal}&qty=${qty}&delivery=${delivery}`;
+});
 </script>
 
 </body>
