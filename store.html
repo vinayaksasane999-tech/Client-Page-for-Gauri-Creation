@@ -124,7 +124,7 @@
     object-fit:cover
   }
 
-  /* ❤️ Wishlist heart (ADDED) */
+  /* ❤️ Wishlist heart */
   .wish-btn{
     position:absolute;
     top:8px;
@@ -163,10 +163,7 @@
   <div id="menuList" class="menu-list">
     <a href="my-orders.html">📦 My Orders</a>
     <a href="track.html">🚚 Track Parcel</a>
-
-    <!-- ❤️ Wishlist link (ADDED) -->
     <a href="wishlist.html">❤️ Wishlist</a>
-
     <a href="mailto:gauricreations04@gmail.com">📩 Support (Email)</a>
     <a href="https://wa.me/917745092723">💬 WhatsApp Support</a>
     <a href="#" onclick="logoutUser()">🚪 Logout</a>
@@ -195,7 +192,6 @@
 
 <script>
 const user = JSON.parse(localStorage.getItem("gc_customer") || "null");
-
 document.getElementById("welcomeText").textContent =
   user ? ("Welcome, " + user.name) : "Welcome to Gauri Creations";
 
@@ -208,24 +204,28 @@ function logoutUser(){
   window.location.href="login.html";
 }
 
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
-
-/* ❤️ Wishlist helpers (ADDED) */
+/* ❤️ Wishlist helpers (SKU ONLY) */
 function getWishlist(){
   return JSON.parse(localStorage.getItem("gc_wishlist") || "[]");
 }
 function saveWishlist(list){
   localStorage.setItem("gc_wishlist", JSON.stringify(list));
 }
-function toggleWishlist(product){
+function toggleWishlist(sku, el){
   const list = getWishlist();
-  const idx = list.findIndex(i => i.SKU === product.SKU);
-  if(idx >= 0) list.splice(idx,1);
-  else list.push(product);
+  const i = list.indexOf(sku);
+  if(i >= 0){
+    list.splice(i,1);
+    el.textContent = "🤍";
+  }else{
+    list.push(sku);
+    el.textContent = "❤️";
+  }
   saveWishlist(list);
-  alert("Wishlist updated ❤️");
 }
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyNznWMbvHaiu7PjF-Kz5i35E1cNq5FobRnjJ2pAWcmhCL42R8f7A_WXxQUkQebdDE/exec";
 
 async function loadProducts(){
   const res = await fetch(SCRIPT_URL+"?action=getProducts");
@@ -236,13 +236,20 @@ async function loadProducts(){
   grid.innerHTML="";
   document.getElementById("summaryTotal").textContent=products.length;
 
+  const wishlist = getWishlist();
+
   products.forEach(p=>{
     const card=document.createElement("div");
     card.className="product-card";
+
+    const liked = wishlist.includes(p.SKU) ? "❤️" : "🤍";
+
     card.innerHTML=`
       <div class="product-img-wrap">
         <img src="${p["Image URL 1"]}" class="product-img">
-        <div class="wish-btn" onclick='toggleWishlist(${JSON.stringify(p)})'>❤️</div>
+        <div class="wish-btn" onclick="toggleWishlist('${p.SKU}', this)">
+          ${liked}
+        </div>
       </div>
       <strong>${p.Name}</strong>
       <div>₹${p.Price}</div>
