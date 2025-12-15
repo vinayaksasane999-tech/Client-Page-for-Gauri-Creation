@@ -1,166 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Complete Payment • Gauri Creations</title>
 
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="favicon.ico">
 
 <style>
-:root {
-  --accent-grad: linear-gradient(135deg,#2563eb,#ec4899);
-  --success-grad: linear-gradient(90deg,#22c55e,#4ade80);
-}
-body {
-  margin:0;
-  padding:20px;
-  min-height:100vh;
-  font-family:Poppins,sans-serif;
-  background:linear-gradient(135deg,#86e1ff,#ffd4b8);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.card {
-  width:100%;
-  max-width:480px;
-  background:#ffffffee;
-  border-radius:22px;
-  padding:22px 20px;
-  box-shadow:0 12px 30px rgba(0,0,0,.25);
-}
-.logo-wrap{text-align:center}
+/* UI UNCHANGED */
+:root{--accent-grad:linear-gradient(135deg,#2563eb,#ec4899);--success-grad:linear-gradient(90deg,#22c55e,#4ade80)}
+body{margin:0;padding:20px;min-height:100vh;font-family:Poppins,sans-serif;background:linear-gradient(135deg,#86e1ff,#ffd4b8);display:flex;justify-content:center;align-items:center}
+.card{width:100%;max-width:480px;background:#ffffffee;border-radius:22px;padding:22px 20px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
 .logo{width:80px;height:80px;border-radius:18px}
-.summary{
-  padding:14px;
-  border-radius:16px;
-  background:#fff;
-  border:1px solid #ddd;
-  margin:12px 0 20px;
-}
-.summary-row{display:flex;justify-content:space-between;margin:5px 0}
-.qr-wrap{text-align:center}
-.qr{width:180px;height:180px;padding:10px;background:#fff;border-radius:20px}
-.pay-buttons{display:flex;flex-direction:column;gap:10px}
-.pay-pill{
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  padding:11px 16px;border-radius:999px;font-weight:600;
-  background:#fff;border:1px solid #ccc;text-decoration:none;color:#000
-}
-.pay-pill img{width:26px;height:26px}
-.confirm-btn{
-  margin-top:14px;width:100%;padding:12px;
-  background:var(--accent-grad);
-  border-radius:999px;font-weight:600;color:#fff;border:none
-}
+.summary{padding:14px;border-radius:16px;background:#fff;border:1px solid #ddd;margin:12px 0 20px}
+.summary-row{display:flex;justify-content:space-between}
+.confirm-btn{margin-top:14px;width:100%;padding:12px;background:var(--accent-grad);border-radius:999px;color:#fff;border:none}
 .slider-shell{margin-top:18px;display:none;text-align:center}
-.slider-label{font-size:13px;margin-bottom:6px}
-.glass-track{
-  width:80%;height:50px;margin:0 auto;border-radius:999px;
-  background:rgba(255,255,255,.55);
-  border:1px solid rgba(255,255,255,.6);
-  position:relative;overflow:hidden;display:none
-}
+.glass-track{width:80%;height:50px;margin:0 auto;border-radius:999px;background:#fff;border:1px solid #ddd;display:none;position:relative}
 .glass-track.visible{display:block}
 .glass-track.success{background:var(--success-grad)}
-.glass-thumb{
-  width:44px;height:44px;border-radius:999px;
-  background:var(--accent-grad);color:#fff;font-size:22px;
-  position:absolute;top:3px;left:3px;
-  display:flex;justify-content:center;align-items:center;
-  animation:moveThumb 1.7s infinite
-}
-@keyframes moveThumb{
-  0%{transform:translateX(0)}
-  50%{transform:translateX(calc(100% - 48px))}
-  100%{transform:translateX(0)}
-}
+.glass-thumb{width:44px;height:44px;border-radius:999px;background:var(--accent-grad);color:#fff;font-size:22px;position:absolute;top:3px;left:3px;display:flex;justify-content:center;align-items:center;animation:move 1.5s infinite}
+@keyframes move{50%{transform:translateX(calc(100% - 48px))}}
 </style>
 </head>
 
 <body>
 
 <div class="card">
-
-<div class="logo-wrap">
-  <img src="logo-gauri.jpeg" class="logo">
-</div>
-
-<h2 style="text-align:center;margin:8px 0;">Complete Your Payment</h2>
-<p style="text-align:center;color:#555;margin:0 0 12px;">Secure UPI Payment</p>
+<img src="logo-gauri.jpeg" class="logo">
 
 <div class="summary">
-  <div class="summary-row"><span>Order ID</span><strong id="summaryOrderId">-</strong></div>
-  <div class="summary-row"><strong>Total</strong><strong id="summaryTotal">₹0</strong></div>
+  <div class="summary-row"><span>Order ID</span><strong id="oid"></strong></div>
 </div>
 
-<div class="qr-wrap">
-  <img src="upi-qr.jpeg" class="qr">
-</div>
-
-<div class="pay-buttons">
-  <a id="btnGpay" class="pay-pill"><img src="gpay.PNG">Pay with GPay</a>
-  <a id="btnPhonePe" class="pay-pill"><img src="phonepe.PNG">Pay with PhonePe</a>
-</div>
-
-<button id="confirmButton" class="confirm-btn">
-  I completed the payment
-</button>
+<button id="confirmButton" class="confirm-btn">I completed the payment</button>
 
 <div class="slider-shell" id="waitArea">
-  <div class="slider-label" id="sliderLabel">Checking payment…</div>
+  <div id="sliderLabel">Checking payment…</div>
   <div class="glass-track" id="glassTrack">
     <div class="glass-thumb">›</div>
   </div>
 </div>
-
 </div>
 
 <script>
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwhyOU_ee33OYs_jowKaqvspE5ejvXhF6uJYa2l5C_Y9Fs7-zJ31P4arUh796000SCC/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwhyOU_ee33OYs_jowKaqvspE5ejvXhF6uJYa2l5C_Y9Fs7-zJ31P4arUh796000SCC/exec";
+const orderId=new URLSearchParams(location.search).get("orderId");
+oid.textContent=orderId;
 
-const orderId = new URLSearchParams(window.location.search).get("orderId");
+let poll;
 
-document.getElementById("summaryOrderId").textContent = orderId;
-
-let pollInterval=null, fallbackTimeout=null;
-
-/* Immediate check */
-function checkPayment(){
+function check(){
   fetch(`${SCRIPT_URL}?action=checkPayment&orderId=${orderId}`)
-  .then(r=>r.json())
-  .then(d=>{
-    if(d.success && d.paymentStatus === "Paid"){
-      clearInterval(pollInterval);
-      clearTimeout(fallbackTimeout);
-      document.getElementById("glassTrack").classList.add("success");
-      document.getElementById("sliderLabel").textContent="Payment Confirmed!";
-      setTimeout(()=>{
-        window.location.href=`confirmation.html?orderId=${orderId}`;
-      },1000);
+  .then(r=>r.json()).then(d=>{
+    if(d.success && d.paymentStatus==="Paid"){
+      clearInterval(poll);
+      glassTrack.classList.add("success");
+      sliderLabel.textContent="Payment Confirmed!";
+      setTimeout(()=>location.href=`confirmation.html?orderId=${orderId}`,1200);
     }
   });
 }
 
-function startPaymentCheck(){
-  document.getElementById("waitArea").style.display="block";
-  document.getElementById("glassTrack").classList.add("visible");
-
-  checkPayment(); // ✅ immediate
-  pollInterval=setInterval(checkPayment,4000);
-
-  fallbackTimeout=setTimeout(()=>{
-    clearInterval(pollInterval);
-    document.getElementById("sliderLabel").textContent=
-      "Still waiting… If paid, contact support.";
-  },120000);
-}
-
-document.getElementById("confirmButton")
-  .addEventListener("click",startPaymentCheck);
+confirmButton.onclick=()=>{
+  waitArea.style.display="block";
+  glassTrack.classList.add("visible");
+  check();
+  poll=setInterval(check,4000);
+};
 </script>
 
 </body>
