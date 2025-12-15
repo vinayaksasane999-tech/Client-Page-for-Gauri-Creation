@@ -13,109 +13,69 @@
   --accent-grad: linear-gradient(135deg,#2563eb,#ec4899);
   --success-grad: linear-gradient(90deg,#22c55e,#4ade80);
 }
-
 body {
-  margin: 0;
-  padding: 20px;
-  min-height: 100vh;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg,#86e1ff,#ffd4b8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin:0;
+  padding:20px;
+  min-height:100vh;
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(135deg,#86e1ff,#ffd4b8);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
-
 .card {
-  width: 100%;
-  max-width: 480px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 22px;
-  padding: 22px 20px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-}
-
-.logo-wrap { text-align:center; }
-.logo { width:80px; height:80px; border-radius:18px; }
-
-.summary {
-  padding: 14px;
-  border-radius: 16px;
-  background: #fff;
-  border: 1px solid #ddd;
-  margin: 12px 0 20px;
-}
-.summary-row { display:flex; justify-content:space-between; margin:5px 0; }
-
-.qr-wrap { text-align:center; }
-.qr { width:180px; height:180px; padding:10px; background:#fff; border-radius:20px; }
-
-.pay-buttons { display:flex; flex-direction:column; gap:10px; }
-.pay-pill {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  padding:11px 16px;
-  border-radius:999px;
-  font-weight:600;
-  background:#fff;
-  border:1px solid #ccc;
-  text-decoration:none;
-  color:#000;
-}
-.pay-pill img { width:26px; height:26px; }
-
-.confirm-btn {
-  margin-top:14px;
   width:100%;
-  padding:12px;
+  max-width:480px;
+  background:#ffffffee;
+  border-radius:22px;
+  padding:22px 20px;
+  box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+.logo-wrap{text-align:center}
+.logo{width:80px;height:80px;border-radius:18px}
+.summary{
+  padding:14px;
+  border-radius:16px;
+  background:#fff;
+  border:1px solid #ddd;
+  margin:12px 0 20px;
+}
+.summary-row{display:flex;justify-content:space-between;margin:5px 0}
+.qr-wrap{text-align:center}
+.qr{width:180px;height:180px;padding:10px;background:#fff;border-radius:20px}
+.pay-buttons{display:flex;flex-direction:column;gap:10px}
+.pay-pill{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:11px 16px;border-radius:999px;font-weight:600;
+  background:#fff;border:1px solid #ccc;text-decoration:none;color:#000
+}
+.pay-pill img{width:26px;height:26px}
+.confirm-btn{
+  margin-top:14px;width:100%;padding:12px;
   background:var(--accent-grad);
-  border-radius:999px;
-  font-weight:600;
-  color:#fff;
-  border:none;
-  cursor:pointer;
+  border-radius:999px;font-weight:600;color:#fff;border:none
 }
-
-/* Waiting animation */
-.slider-shell { margin-top:18px; display:none; text-align:center; }
-.slider-label { font-size:13px; margin-bottom:6px; }
-
-.glass-track {
-  width:20%;
-  height:50px;
-  margin:0 auto;
-  border-radius:999px;
-  background:rgba(255,255,255,0.55);
-  border:1px solid rgba(255,255,255,0.6);
-  position:relative;
-  overflow:hidden;
-  display:none;
+.slider-shell{margin-top:18px;display:none;text-align:center}
+.slider-label{font-size:13px;margin-bottom:6px}
+.glass-track{
+  width:80%;height:50px;margin:0 auto;border-radius:999px;
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.6);
+  position:relative;overflow:hidden;display:none
 }
-.glass-track.visible { display:block; }
-.glass-track.success { background:var(--success-grad); }
-
-.glass-thumb {
-  width:44px;
-  height:44px;
-  border-radius:999px;
-  background:var(--accent-grad);
-  color:#fff;
-  font-size:22px;
-  font-weight:bold;
-  position:absolute;
-  top:3px;
-  left:3px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  animation:moveThumb 1.7s infinite;
+.glass-track.visible{display:block}
+.glass-track.success{background:var(--success-grad)}
+.glass-thumb{
+  width:44px;height:44px;border-radius:999px;
+  background:var(--accent-grad);color:#fff;font-size:22px;
+  position:absolute;top:3px;left:3px;
+  display:flex;justify-content:center;align-items:center;
+  animation:moveThumb 1.7s infinite
 }
-
-@keyframes moveThumb {
-  0% { transform:translateX(0); }
-  50% { transform:translateX(calc(100% - 48px)); }
-  100% { transform:translateX(0); }
+@keyframes moveThumb{
+  0%{transform:translateX(0)}
+  50%{transform:translateX(calc(100% - 48px))}
+  100%{transform:translateX(0)}
 }
 </style>
 </head>
@@ -132,19 +92,13 @@ body {
 <p style="text-align:center;color:#555;margin:0 0 12px;">Secure UPI Payment</p>
 
 <div class="summary">
-  <div class="summary-row"><span>Product</span><strong id="summaryProduct">-</strong></div>
   <div class="summary-row"><span>Order ID</span><strong id="summaryOrderId">-</strong></div>
-  <div class="summary-row"><span>Price</span><span id="summaryPrice">₹0</span></div>
-  <div class="summary-row"><span>Qty</span><span id="summaryQty">0</span></div>
-  <div class="summary-row"><span>Delivery</span><span id="summaryShip">₹0</span></div>
   <div class="summary-row"><strong>Total</strong><strong id="summaryTotal">₹0</strong></div>
 </div>
 
 <div class="qr-wrap">
   <img src="upi-qr.jpeg" class="qr">
 </div>
-
-<p style="text-align:center;margin-bottom:10px;">Scan or use quick buttons</p>
 
 <div class="pay-buttons">
   <a id="btnGpay" class="pay-pill"><img src="gpay.PNG">Pay with GPay</a>
@@ -170,44 +124,11 @@ const SCRIPT_URL =
 
 const orderId = new URLSearchParams(window.location.search).get("orderId");
 
-let pollInterval = null;
-let fallbackTimeout = null;
+document.getElementById("summaryOrderId").textContent = orderId;
 
-/* Load order details */
-fetch(`${SCRIPT_URL}?action=getOrders`)
-.then(r=>r.json())
-.then(d=>{
-  const order = d.orders.find(o => o["Order ID"] === orderId);
-  if(!order) return;
+let pollInterval=null, fallbackTimeout=null;
 
-  document.getElementById("summaryOrderId").textContent = orderId;
-  document.getElementById("summaryProduct").textContent = order["Product Name"];
-  document.getElementById("summaryPrice").textContent = "₹"+order["Price"];
-  document.getElementById("summaryQty").textContent = order["Qty"];
-  document.getElementById("summaryShip").textContent = "₹"+order["Delivery"];
-  document.getElementById("summaryTotal").textContent = "₹"+order["Total"];
-
-  const upi =
-    `upi://pay?pa=vinayaksasane999-2@oksbi&pn=Gauri Creations&am=${order["Total"]}&cu=INR`;
-
-  document.getElementById("btnGpay").href = upi;
-  document.getElementById("btnPhonePe").href = upi;
-});
-
-/* Start waiting + polling */
-function startPaymentCheck(){
-  document.getElementById("waitArea").style.display="block";
-  document.getElementById("glassTrack").classList.add("visible");
-
-  pollInterval = setInterval(checkPayment, 4000);
-
-  fallbackTimeout = setTimeout(()=>{
-    clearInterval(pollInterval);
-    document.getElementById("sliderLabel").textContent =
-      "Still waiting… If paid, contact support.";
-  },120000);
-}
-
+/* Immediate check */
 function checkPayment(){
   fetch(`${SCRIPT_URL}?action=checkPayment&orderId=${orderId}`)
   .then(r=>r.json())
@@ -215,25 +136,31 @@ function checkPayment(){
     if(d.success && d.paymentStatus === "Paid"){
       clearInterval(pollInterval);
       clearTimeout(fallbackTimeout);
-
       document.getElementById("glassTrack").classList.add("success");
-      document.getElementById("sliderLabel").textContent =
-        "Payment Confirmed!";
-
+      document.getElementById("sliderLabel").textContent="Payment Confirmed!";
       setTimeout(()=>{
-        window.location.href =
-          `confirmation.html?orderId=${orderId}`;
-      },1200);
+        window.location.href=`confirmation.html?orderId=${orderId}`;
+      },1000);
     }
-  })
-  .catch(()=>{});
+  });
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-  document
-    .getElementById("confirmButton")
-    .addEventListener("click", startPaymentCheck);
-});
+function startPaymentCheck(){
+  document.getElementById("waitArea").style.display="block";
+  document.getElementById("glassTrack").classList.add("visible");
+
+  checkPayment(); // ✅ immediate
+  pollInterval=setInterval(checkPayment,4000);
+
+  fallbackTimeout=setTimeout(()=>{
+    clearInterval(pollInterval);
+    document.getElementById("sliderLabel").textContent=
+      "Still waiting… If paid, contact support.";
+  },120000);
+}
+
+document.getElementById("confirmButton")
+  .addEventListener("click",startPaymentCheck);
 </script>
 
 </body>
