@@ -35,7 +35,6 @@ body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradien
   <img id="prodImg" class="product-img">
   <div>
     <div id="prodName" style="font-size:18px;font-weight:600;">Product</div>
-    <!-- ✅ PRICE FIXED -->
     <div id="prodPrice" style="font-weight:600; color:#c62828;">₹0</div>
     <div id="prodWeight" style="font-size:13px;color:#666;">Weight: - g</div>
   </div>
@@ -60,15 +59,26 @@ body { margin: 0; font-family: "Poppins", sans-serif; background: linear-gradien
   <div><strong>Expected Delivery:</strong> <span id="deliveryDate">-</span></div>
 </div>
 
-<button type="button" class="btn-proceed" onclick="submitOrder(event)">
-  Proceed to Payment
-</button>
+<button type="button" class="btn-proceed" onclick="submitOrder(event)">Proceed to Payment</button>
 
 </div>
 
 <script>
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbwhyOU_ee33OYs_jowKaqvspE5ejvXhF6uJYa2l5C_Y9Fs7-zJ31P4arUh796000SCC/exec";
+
+/* DOM */
+const qtyEl = document.getElementById("qty");
+const sumPrice = document.getElementById("sumPrice");
+const sumDelivery = document.getElementById("sumDelivery");
+const sumTotal = document.getElementById("sumTotal");
+const deliveryDate = document.getElementById("deliveryDate");
+
+const custName = document.getElementById("custName");
+const custPhone = document.getElementById("custPhone");
+const custPincode = document.getElementById("custPincode");
+const custAddress = document.getElementById("custAddress");
+const custNotes = document.getElementById("custNotes");
 
 /* STATE */
 let qty = 1;
@@ -84,8 +94,10 @@ function shippingByWeight(g){
   return 79 + Math.ceil((g - 1000) / 500) * 30;
 }
 
-/* SUMMARY */
+/* SUMMARY (FIXED) */
 function updateSummary(){
+  qtyEl.textContent = qty;
+
   if(!prodPrice) return;
 
   const subtotal = prodPrice * qty;
@@ -105,7 +117,6 @@ function updateSummary(){
 
 function updateQty(v){
   qty = Math.max(1, qty + v);
-  qtyEl.textContent = qty;
   updateSummary();
 }
 
@@ -113,30 +124,32 @@ function updateQty(v){
 const sku = new URLSearchParams(window.location.search).get("sku");
 
 fetch(`${SCRIPT_URL}?action=getProduct&sku=${encodeURIComponent(sku)}`)
-.then(r => r.json())
-.then(d => {
-  if(!d.success || !d.product) return;
+.then(r=>r.json())
+.then(d=>{
+  if(!d.success || !d.product){
+    alert("Product not found");
+    return;
+  }
 
   const p = d.product;
-
   prodName = p["Name"];
   prodPrice = Number(p["Price"]);
   weightPerItem = Number(p["Weight"] || 0);
 
-  prodNameEl.textContent = prodName;
-  prodPriceEl.textContent = "₹" + prodPrice;   // ✅ FIXED
-  prodImg.src = p["Image URL 1"];
-  prodWeight.textContent = `Weight: ${weightPerItem} g`;
+  document.getElementById("prodName").textContent = prodName;
+  document.getElementById("prodPrice").textContent = "₹" + prodPrice;
+  document.getElementById("prodImg").src = p["Image URL 1"];
+  document.getElementById("prodWeight").textContent =
+    `Weight: ${weightPerItem} g`;
 
   updateSummary();
 });
 
-/* PINCODE CHANGE */
 custPincode.addEventListener("input", updateSummary);
 
 /* SUBMIT ORDER */
 async function submitOrder(e){
-  e.preventDefault();
+  if(e) e.preventDefault();
 
   if(!custName.value || !custPhone.value || !custAddress.value || !/^\d{6}$/.test(custPincode.value)){
     alert("Please fill all required fields");
@@ -159,17 +172,16 @@ async function submitOrder(e){
   form.append("phone",custPhone.value);
   form.append("address",custAddress.value);
   form.append("pincode",custPincode.value);
-  form.append("notes",custNotes.value || "");
+  form.append("notes",custNotes.value||"");
 
-  const res = await fetch(SCRIPT_URL,{ method:"POST", body:form });
+  const res = await fetch(SCRIPT_URL,{method:"POST",body:form});
   const data = await res.json();
 
-  if(!data.success){
-    alert("Order failed. Please try again.");
-    return;
+  if(data.success){
+    window.location.href = `payment.html?orderId=${data.orderId}`;
+  }else{
+    alert("Order failed");
   }
-
-  window.location.href = `payment.html?orderId=${data.orderId}`;
 }
 </script>
 
