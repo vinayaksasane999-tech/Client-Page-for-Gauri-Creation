@@ -135,11 +135,17 @@ async function loadOrders(){
             value="${o["Expected Delivery Date"]||""}"
             onchange="updateOrder('${o["Order ID"]}','expectedDelivery',this.value)">
         </td>
-        <td>
-          <button class="btn btn-primary" onclick="alert('Updated ✔')">Save</button>
-          <br><br>
-          <button class="btn btn-support" onclick="support('${o["Phone"]}')">Support</button>
-        </td>
+      <td>
+  <button class="btn btn-primary"
+    onclick="window.open('${SCRIPT_URL}?action=printLabel&orderId=${o["Order ID"]}','_blank')">
+    🖨️ Print Label
+  </button>
+  <br><br>
+  <button class="btn btn-support"
+    onclick="support('${o["Phone"]}')">
+    Support
+  </button>
+</td>
       `;
       tbody.appendChild(tr);
     });
@@ -166,3 +172,4 @@ loadOrders();
 </body>
 
 </html>
+
