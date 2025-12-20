@@ -100,7 +100,6 @@ async function loadOrders(){
   tbody.innerHTML = "";
 
   data.orders
-    /* ✅ FIXED LINE */
     .filter(o => String(o["Payment Status"]).toLowerCase() === "paid")
     .reverse()
     .forEach(o=>{
@@ -109,7 +108,7 @@ async function loadOrders(){
       tr.innerHTML = `
         <td>${o["Order ID"]}</td>
         <td>${o["Customer Name"]}<br><small>${o["Phone"]}</small></td>
-        <td style="max-width:200px">${o["Address"]||"-"}</td>
+        <td style="max-width:200px">${o["Address"] || "-"}</td>
 
         <td>
           <select onchange="updateOrder('${o["Order ID"]}','status',this.value)">
@@ -133,10 +132,19 @@ async function loadOrders(){
 
         <td>
           <button class="btn btn-primary"
-            onclick="window.open('${SCRIPT_URL}?action=printLabel&orderId=${o["Order ID"]}','_blank')">
-            🖨️ Print Label
+            onclick="window.open('${SCRIPT_URL}?action=printLabel&orderId=${o["Order ID"]}&type=courier','_blank')">
+            🖨️ Courier Label
           </button>
+
           <br><br>
+
+          <button class="btn btn-primary"
+            onclick="window.open('${SCRIPT_URL}?action=printLabel&orderId=${o["Order ID"]}&type=brand','_blank')">
+            🎨 Brand Label
+          </button>
+
+          <br><br>
+
           <button class="btn btn-support"
             onclick="support('${o["Phone"]}')">
             Support
