@@ -250,7 +250,13 @@ async function loadProducts(){
 
     card.innerHTML=`
       <div class="product-img-wrap">
-        <img src="${p["Image URL 1"]}" class="product-img">
+        <img 
+  src="${encodeURI(p['Image URL 1'] || '')}" 
+  class="product-img"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+  onerror="this.src='placeholder.jpg'">
+
         <div class="wish-btn" onclick="toggleWishlist('${p.SKU}', this)">
           ${liked}
         </div>
